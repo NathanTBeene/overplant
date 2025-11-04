@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #090f14;
+  --color-background-secondary: #111a28;
+  --color-border: #425666;
+  --color-fill: #29313e;
+  --color-fill-dark: #272c31;
+  --color-fill-hover: #3a4045;
+  --color-text: #eeeeee;
+  --color-accent: #18636c;
+  --color-accent-hover: #22828dff;
+  --color-accent-active: #2bb9b2ff;
+
+  --color-overwatch-ally: #25d4fc;
+  --color-overwatch-enemy: #ef2f52;
+
+  --color-confirm: #4caf50;
+  --color-confirm-hover: #45a049;
+
+  --color-cancel: #f44336;
+  --color-cancel-hover: #da190b;
+}
+
+:root {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.6px;
+}
