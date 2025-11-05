@@ -1,4 +1,5 @@
 import ValueSlider from "@/components/base/ValueSlider";
+import BrushTypeSelector from "./BrushTypeSelector";
 
 const PenTool = () => {
   const handleOpacityChange = (value: number[]) => {
@@ -11,6 +12,7 @@ const PenTool = () => {
       <BrushTypeSelector selectedBrushType="line" />
 
       {/* Color Options */}
+      <ColorOptions />
 
       {/* Opacity Slider */}
       <div className="w-full flex justify-between items-center mt-5">
@@ -39,172 +41,43 @@ const PenTool = () => {
   );
 };
 
-interface BrushTypeSelectorProps {
-  selectedBrushType: "line" | "dashedLine" | "arrow" | "dashedArrow";
+import { Plus } from "lucide-react";
+
+interface ColorOptionsProps {
+  selectedColor?: string;
 }
 
-const BrushTypeSelector = ({ selectedBrushType }: BrushTypeSelectorProps) => {
+const ColorOptions = ({ selectedColor = "#000000" }: ColorOptionsProps) => {
+  const testColors = [
+    "#FF0000",
+    "#00FF00",
+    "#0000FF",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#000000",
+    "#FFFFFF",
+    "#808080",
+    "#800000",
+    "#008000",
+  ];
+
+  const colorButton = (color: string, isSelected: boolean) => (
+    <button
+      key={color}
+      className={`w-6 h-6 rounded-sm hover:brightness-110 cursor-pointer hover:scale-110 transition-all duration-150
+        ${isSelected ? "ring-2 ring-accent-active" : ""}`}
+      style={{ backgroundColor: color }}
+    />
+  );
+
   return (
-    <div className="w-full mt-2 flex justify-between items-center">
-      <label className="text-sm font-medium w-30">Type</label>
-      <div className="flex space-x-2">
-        {/* Line */}
-        <button>
-          <svg
-            width={25}
-            height={25}
-            className={`rounded-md transition-all duration-200 cursor-pointer ${
-              selectedBrushType === "line"
-                ? "bg-accent-active"
-                : "bg-accent hover:bg-accent-hover"
-            }`}
-          >
-            <line
-              x1="6"
-              y1="19"
-              x2="19"
-              y2="6"
-              stroke={
-                selectedBrushType === "line"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-        {/* Dashed Line */}
-        <button>
-          <svg
-            width={25}
-            height={25}
-            className={`rounded-md transition-all duration-200 cursor-pointer ${
-              selectedBrushType !== "dashedLine"
-                ? "bg-accent hover:bg-accent-hover"
-                : "bg-accent-active"
-            }`}
-          >
-            <line
-              x1="6"
-              y1="19"
-              x2="19"
-              y2="6"
-              stroke={
-                selectedBrushType === "dashedLine"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="3.5"
-            />
-          </svg>
-        </button>
-        {/* Arrow */}
-        <button>
-          <svg
-            width={25}
-            height={25}
-            className={`rounded-md transition-all duration-200 cursor-pointer ${
-              selectedBrushType !== "arrow"
-                ? "bg-accent hover:bg-accent-hover"
-                : "bg-accent-active"
-            }`}
-          >
-            <line
-              x1="6"
-              y1="19"
-              x2="19"
-              y2="6"
-              stroke={
-                selectedBrushType === "arrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="19"
-              y1="6"
-              x2="10"
-              y2="6"
-              stroke={
-                selectedBrushType === "arrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="19"
-              y1="6"
-              x2="19"
-              y2="15"
-              stroke={
-                selectedBrushType === "arrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-        {/* Dashed Arrow */}
-        <button>
-          <svg
-            width={25}
-            height={25}
-            className={`rounded-md transition-all duration-200 cursor-pointer ${
-              selectedBrushType !== "dashedArrow"
-                ? "bg-accent hover:bg-accent-hover"
-                : "bg-accent-active"
-            }`}
-          >
-            <line
-              x1="6"
-              y1="19"
-              x2="19"
-              y2="6"
-              stroke={
-                selectedBrushType === "dashedArrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="3.5"
-            />
-            <line
-              x1="19"
-              y1="6"
-              x2="10"
-              y2="6"
-              stroke={
-                selectedBrushType === "dashedArrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="19"
-              y1="6"
-              x2="19"
-              y2="15"
-              stroke={
-                selectedBrushType === "dashedArrow"
-                  ? "var(--color-background-secondary)"
-                  : "white"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+    <div className="w-full flex justify-between items-center mt-5">
+      <label className="text-sm font-medium w-30">Color</label>
+      <div className="grid grid-cols-6 gap-x-3 gap-y-1">
+        {testColors.map((color) => colorButton(color, color === selectedColor))}
+        <button className="w-6 h-6 rounded-sm bg-accent text-lg flex items-center justify-center hover:bg-accent-hover cursor-pointer">
+          <Plus size={18} color="white" />
         </button>
       </div>
     </div>

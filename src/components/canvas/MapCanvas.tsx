@@ -54,6 +54,7 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     stageRef,
     elements,
     addElement,
+    selectedElementId,
     setSelectedElementId,
   } = useStageContext();
 
@@ -169,6 +170,8 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
       };
 
       addElement(heroElement);
+
+      setSelectedElementId(heroElement.id);
     } catch (error) {
       console.error("Failed to parse dropped data:", error);
     }
@@ -176,8 +179,17 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
 
   const handleMouseDown = (e: any) => {
     // Deselect any selected element when clicking on empty space
-    if (e.target === e.target.getStage()) {
+    if (
+      e.target === e.target.getStage() ||
+      e.target.id().includes("map-image")
+    ) {
       setSelectedElementId(null);
+    } else {
+      // Get target element
+      const targetElement = e.target;
+      if (!targetElement) return;
+
+      setSelectedElementId(targetElement.id());
     }
 
     // Dont do anything on middle/right click
@@ -213,6 +225,7 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
       <div className="absolute top-4 left-4 px-4 py-2 z-10 rounded-md bg-fill-dark">
         <p>Stage Position: {`(${stagePosition.x}, ${stagePosition.y})`}</p>
         <p>Stage Scale: {stageScale.toFixed(2)}</p>
+        <p>Selected Element ID: {selectedElementId || "None"}</p>
       </div>
       <Stage
         width={stageDimensions.width}

@@ -67,7 +67,7 @@ const HeroPortrait = ({
   return (
     <>
       <div
-        className="w-20 h-20 bg-background-secondary hover:bg-fill rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing"
+        className="w-20 h-20 shrink-0 bg-background-secondary hover:bg-fill rounded-md flex items-center justify-center cursor-grab active:cursor-grabbing"
         draggable
         onDragStart={handleDragStart}
         onDrag={handleDrag}

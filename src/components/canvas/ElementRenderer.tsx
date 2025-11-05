@@ -16,6 +16,14 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
     id: element.id,
     draggable: element.draggable ?? false,
     onDragEnd: handleDragEnd,
+    onmouseenter: (e: any) => {
+      const container = e.target.getStage().container();
+      container.style.cursor = "pointer";
+    },
+    onmouseleave: (e: any) => {
+      const container = e.target.getStage().container();
+      container.style.cursor = "default";
+    },
   };
 
   switch (element.type) {

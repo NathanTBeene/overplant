@@ -13,6 +13,7 @@ const MapImage = ({ src }: { src: string }) => {
 
   return (
     <Image
+      id={`map-image-${mapSide.toLowerCase()}`}
       image={image}
       scaleX={scale}
       scaleY={scale}

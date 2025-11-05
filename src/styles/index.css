@@ -22,6 +22,17 @@
   --color-cancel-hover: #da190b;
 }
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 :root {
   font-family: 'Roboto', sans-serif;
   letter-spacing: 0.6px;

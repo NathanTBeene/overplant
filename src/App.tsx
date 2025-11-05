@@ -25,7 +25,7 @@ function App() {
         <MapCanvas map={currentMap} />
       </div>
       {/* Hero Bar */}
-      <div className="h-25 bg-background border-t border-border">
+      <div className="h-25 bg-background border-t border-border flex overflow-hidden">
         <HeroBar />
       </div>
     </div>
