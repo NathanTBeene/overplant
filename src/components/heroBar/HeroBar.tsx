@@ -7,6 +7,7 @@ import SupportIcon from "@/assets/icons/support_icon.svg?react";
 import { useRef, useState } from "react";
 import HeroBarSwitch from "./components/HeroBarSwitch";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import Carousel from "../base/Carousel";
 
 const HeroBar = () => {
   const [isAlly, setIsAlly] = useState(true);
@@ -25,34 +26,45 @@ const HeroBar = () => {
         <HeroBarSwitch isAlly={isAlly} onToggle={setIsAlly} />
       </div>
 
-      <ScrollArea.Root className="w-full h-full flex items-center">
-        <ScrollArea.Viewport
-          onWheel={handleWheel}
-          ref={viewportRef}
-          className="flex-1 overflow-visible"
-        >
-          <div className="px-4 flex flex-row gap-2 pr-100">
-            <HeroList isAlly={isAlly} />
-          </div>
-        </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="horizontal" />
-      </ScrollArea.Root>
+      <div className="flex-1 h-full flex items-center gap-4">
+        <RoleCarousel role="Tank" isAlly={isAlly} />
+        <RoleCarousel role="Damage" isAlly={isAlly} />
+        <RoleCarousel role="Support" isAlly={isAlly} />
+      </div>
     </div>
   );
 };
 
-interface HeroListProps {
+interface RoleCarouselProps {
+  role: "Tank" | "Damage" | "Support";
   isAlly: boolean;
 }
 
-const HeroList = ({ isAlly }: HeroListProps) => {
-  const tankHeroes = getRoleHeroes("Tank");
-  const damageHeroes = getRoleHeroes("Damage");
-  const supportHeroes = getRoleHeroes("Support");
+const RoleCarousel = ({ role, isAlly }: RoleCarouselProps) => {
+  const heroes = getRoleHeroes(role);
+
+  const getIcon = () => {
+    switch (role) {
+      case "Tank":
+        return TankIcon;
+      case "Damage":
+        return DamageIcon;
+      case "Support":
+        return SupportIcon;
+    }
+  };
+
+  const Icon = getIcon();
+
+  const heroElements = heroes.map((hero) => (
+    <HeroPortrait key={hero.id} hero={hero} isAlly={isAlly} />
+  ));
+
   return (
-    <>
+    <div className="flex flex-col items-center gap-2">
+      {/* Role Header */}
       <div className="flex flex-col items-center justify-center gap-2">
-        <TankIcon
+        <Icon
           className={`h-11 w-11 mx-4 ${
             isAlly ? "fill-overwatch-ally" : "fill-overwatch-enemy"
           }`}
@@ -62,47 +74,17 @@ const HeroList = ({ isAlly }: HeroListProps) => {
             isAlly ? "text-overwatch-ally" : "text-overwatch-enemy"
           }`}
         >
-          Tank
+          {role}
         </span>
       </div>
-      {tankHeroes.map((hero) => (
-        <HeroPortrait key={hero.id} hero={hero} isAlly={isAlly} />
-      ))}
-      <div className="flex flex-col items-center justify-center gap-2">
-        <DamageIcon
-          className={`h-11 w-11 mx-4 ${
-            isAlly ? "fill-overwatch-ally" : "fill-overwatch-enemy"
-          }`}
-        />
-        <span
-          className={`font-bold uppercase text-xs ${
-            isAlly ? "text-overwatch-ally" : "text-overwatch-enemy"
-          }`}
-        >
-          Damage
-        </span>
+
+      {/* Heroes Carousel */}
+      <div className="w-full">
+        <Carousel itemsPerView={3} className="w-full">
+          {heroElements}
+        </Carousel>
       </div>
-      {damageHeroes.map((hero) => (
-        <HeroPortrait key={hero.id} hero={hero} isAlly={isAlly} />
-      ))}
-      <div className="flex flex-col items-center justify-center gap-2">
-        <SupportIcon
-          className={`h-11 w-11 mx-4 ${
-            isAlly ? "fill-overwatch-ally" : "fill-overwatch-enemy"
-          }`}
-        />
-        <span
-          className={`font-bold uppercase text-xs ${
-            isAlly ? "text-overwatch-ally" : "text-overwatch-enemy"
-          }`}
-        >
-          Support
-        </span>
-      </div>
-      {supportHeroes.map((hero) => (
-        <HeroPortrait key={hero.id} hero={hero} isAlly={isAlly} />
-      ))}
-    </>
+    </div>
   );
 };
 
