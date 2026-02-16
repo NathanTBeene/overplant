@@ -98,8 +98,8 @@ export const mapsInfo: Map[] = [
         position: { x: -1160, y: -800 },
       },
       defense: {
-        scale: 0.7,
-        position: { x: -1160, y: -800 },
+        scale: 0.75,
+        position: { x: -1352, y: -2733 },
       },
     },
     type: "escort",

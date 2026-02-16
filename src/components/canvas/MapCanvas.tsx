@@ -222,7 +222,6 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
 
       addElement(heroElement);
 
-      setSelectedElementId(heroElement.id);
     } catch (error) {
       console.error("Failed to parse dropped data:", error);
     }
@@ -444,6 +443,7 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
       endBatch();
       drawStartPos.current = null;
       setActiveTool("none");
+      setSelectedElementId(null); // Deselect after drawing
     }
 
     // Re-enable dragging after mouse up
@@ -498,7 +498,6 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     }
 
     addElement(newLine);
-    setSelectedElementId(newLine.id);
   };
 
   const handleLineTool = (e: KonvaEventObject<MouseEvent>) => {
@@ -545,7 +544,6 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     };
 
     addElement(newLine);
-    setSelectedElementId(newLine.id);
   }
 
   const handleShapeTool = (type: "rectangle" | "circle") => (e: KonvaEventObject<MouseEvent>) => {
@@ -587,7 +585,6 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     };
 
     addElement(newShape);
-    setSelectedElementId(newShape.id);
   }
 
   const handleEraseTool = (e: KonvaEventObject<MouseEvent>) => {

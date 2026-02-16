@@ -30,9 +30,10 @@ const SelectionTransformer = ({
       return;
     }
 
+    const isHero = selectedElement.id.startsWith("hero-");
     const isShape = ["rectangle", "circle", "image", "text"].includes(selectedElement.type);
 
-    if (isShape) {
+    if (isShape && !isHero) {
       // Find the node by ID using Konva's findOne
       const node = stageRef.current.findOne(`#${selectedElement.id}`);
       if (node) {
