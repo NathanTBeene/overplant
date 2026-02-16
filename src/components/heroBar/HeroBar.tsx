@@ -79,7 +79,7 @@ const RoleCarousel = ({ role, isAlly }: RoleCarouselProps) => {
 
       {/* Heroes Carousel */}
       <div className="w-full">
-        <Carousel itemsPerView={3} className="w-full">
+        <Carousel itemsPerView={4.5} className="w-full">
           {heroElements}
         </Carousel>
       </div>

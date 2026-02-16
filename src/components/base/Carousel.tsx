@@ -62,6 +62,9 @@ const Carousel = ({
     <div
       ref={containerRef}
       className={`overflow-hidden ${className}`}
+      style={{
+        maxWidth: `${itemsPerView * itemWidth + (totalItems * 16)}px`,
+      }}
       onWheel={handleWheel}
     >
       <div
