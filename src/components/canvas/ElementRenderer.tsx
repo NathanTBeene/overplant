@@ -120,6 +120,7 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
       );
 
     case "text":
+      // TODO: implement
       return (
         <></>
       );

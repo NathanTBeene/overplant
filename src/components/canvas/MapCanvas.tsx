@@ -29,6 +29,7 @@ export interface MapElement {
   text?: string;
   fontSize?: number;
   fontFamily?: string;
+  isEditing?: boolean;
   // Common Styles
   color?: string;
   fill?: string;
@@ -684,20 +685,29 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   const handleTextTool = (e: KonvaEventObject<MouseEvent>) => {
     if (e.evt.button !== 0) return; // Only respond to left click
 
+    console.log("Text tool clicked");
+
     const stage = stageRef.current;
     if (!stage) return;
 
     const pos = getStageCoords();
 
+    // TODO: Implement text
     const newText: MapElement = {
       id: `text-${Date.now()}`,
       type: "text",
       x: pos.x,
       y: pos.y,
+      text: "",
+      width: 200,
+      fontSize: 18,
+      fontFamily: "Arial",
+      color: "#FFFFFF",
+      draggable: true,
+      isEditing: true
     }
 
     addElement(newText);
-    setSelectedElementId(newText.id);
     setActiveTool("none");
   }
 
@@ -731,9 +741,18 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
           <p>Brush: {toolSettings.pen.brushType}</p>
         )}
       </div>
-      <div className="absolute top-50 left-50 z-10">
-        <TextElement />
-      </div>
+
+      {/* Text Elements - rendered outside canvas */}
+      {elements.filter(el => el.type === "text").map((element) => {
+        return (<TextElement
+          key={element.id}
+          element={element}
+          onUpdate={updateElement}
+          stageScale={stageScale}
+          stagePosition={stagePosition}
+        />)
+      })}
+
       <Stage
         width={stageDimensions.width}
         height={stageDimensions.height}
@@ -757,7 +776,7 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
         </Layer>
         {/* Elements Layer */}
         <Layer>
-          {elements.map((element) => (
+          {elements.filter(el => el.type !== "text").map((element) => (
             <ElementRenderer
               key={element.id}
               element={element}
