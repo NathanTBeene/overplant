@@ -90,7 +90,7 @@ export const mapsInfo: Map[] = [
   {
     id: "havana",
     name: "Havana",
-    mapImage: "/src/assets/maps/havana/map.jpg",
+    mapImage: "/src/assets/maps/havana/map.png",
     headerImage: "/src/assets/maps/havana/header.webp",
     initialSettings: {
       attack: {
