@@ -18,6 +18,12 @@ export const heroesInfo: HeroInfo[] = [
     portrait: "/src/assets/portraits/Ana.png",
   },
   {
+    id: "anran",
+    name: "Anran",
+    role: "Damage",
+    portrait: "/src/assets/portraits/Anran.png",
+  },
+  {
     id: "ashe",
     name: "Ashe",
     role: "Damage",
@@ -48,6 +54,12 @@ export const heroesInfo: HeroInfo[] = [
     portrait: "/src/assets/portraits/Cassidy.png",
   },
   {
+    id: "domina",
+    name: "Domina",
+    role: "Tank",
+    portrait: "/src/assets/portraits/Domina.png",
+  },
+  {
     id: "doomfist",
     name: "Doomfist",
     role: "Tank",
@@ -64,6 +76,12 @@ export const heroesInfo: HeroInfo[] = [
     name: "Echo",
     role: "Damage",
     portrait: "/src/assets/portraits/Echo.png",
+  },
+  {
+    id: "emre",
+    name: "Emre",
+    role: "Damage",
+    portrait: "/src/assets/portraits/Emre.png",
   },
   {
     id: "freija",
@@ -94,6 +112,12 @@ export const heroesInfo: HeroInfo[] = [
     name: "Illari",
     role: "Support",
     portrait: "/src/assets/portraits/Illari.png",
+  },
+  {
+    id: "jetpackcat",
+    name: "Jetpack Cat",
+    role: "Support",
+    portrait: "/src/assets/portraits/JetpackCat.png",
   },
   {
     id: "junkerqueen",
@@ -150,11 +174,23 @@ export const heroesInfo: HeroInfo[] = [
     portrait: "/src/assets/portraits/Mercy.png",
   },
   {
+    id: "mizuki",
+    name: "Mizuki",
+    role: "Support",
+    portrait: "/src/assets/portraits/Mizuki.png",
+  },
+  {
     id: "moira",
     name: "Moira",
     role: "Support",
     portrait: "/src/assets/portraits/Moira.png",
   },
+  {
+    id: "vendetta",
+    name: "Vendetta",
+    role: "Damage",
+    portrait: "/src/assets/portraits/Vendetta.png",
+  }
 ];
 
 export const getRoleHeroes = (role: "Tank" | "Damage" | "Support"): HeroInfo[] => {
