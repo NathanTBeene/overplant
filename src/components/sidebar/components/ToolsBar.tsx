@@ -10,31 +10,44 @@ import {
   Ellipsis,
 } from "lucide-react";
 import PenTool from "./ToolsBar/PenTool";
+import ShapeTool from "./ToolsBar/ShapeTool";
+import EraseTool from "./ToolsBar/EraseTool";
+import TextTool from "./ToolsBar/TextTool";
+import ImageTool from "./ToolsBar/ImageTool";
+
+export type ToolType =
+  | "pen"
+  | "erase"
+  | "text"
+  | "image"
+  | "rectangle"
+  | "circle"
+  | "line"
+  | "icons"
+  | "none";
 
 interface ToolsBarProps {
-  selectedTool?:
-    | "pen"
-    | "erase"
-    | "text"
-    | "image"
-    | "rectangle"
-    | "circle"
-    | "line"
-    | "icons";
-  onSelectTool?: (tool: ToolsBarProps["selectedTool"]) => void;
+  selectedTool?: ToolType;
+  onSelectTool?: (tool: ToolType) => void;
   onDeselectTool?: () => void;
 }
 
 const ToolsBar = ({
-  selectedTool = "pen",
+  selectedTool = "none",
   onSelectTool,
   onDeselectTool,
 }: ToolsBarProps) => {
-  const handleSelectTool = (tool: ToolsBarProps["selectedTool"]) => {
+  const handleSelectTool = (tool: ToolType) => {
     if (tool === selectedTool) {
-      onDeselectTool && onDeselectTool();
+      if (onDeselectTool) {
+        console.log("deselecting tool");
+        onDeselectTool();
+      }
     } else {
-      onSelectTool && onSelectTool(tool);
+      if (onSelectTool) {
+        console.log("selecting tool:", tool);
+        onSelectTool(tool);
+      }
     }
   };
 
@@ -42,6 +55,20 @@ const ToolsBar = ({
     switch (selectedTool) {
       case "pen":
         return <PenTool />;
+      case "line":
+      return <PenTool />
+      case "erase":
+        return <EraseTool />
+      case "text":
+        return <TextTool />
+      case "image":
+        return <ImageTool />
+      case "rectangle":
+        return <ShapeTool />;
+      case "circle":
+        return <ShapeTool />;
+      default:
+        return null;
     }
   };
 
@@ -50,49 +77,41 @@ const ToolsBar = ({
       <SidebarHeader title="Tools" tooltip="Select a tool" />
       <div className="grid grid-cols-4 gap-2 py-2">
         <ToolButton
-          tool="pen"
           icon={<Pen size={20} />}
           isSelected={selectedTool === "pen"}
           onSelect={() => handleSelectTool("pen")}
         />
         <ToolButton
-          tool="erase"
           icon={<Eraser size={20} />}
           isSelected={selectedTool === "erase"}
           onSelect={() => handleSelectTool("erase")}
         />
         <ToolButton
-          tool="text"
           icon={<TextSelect size={20} />}
           isSelected={selectedTool === "text"}
           onSelect={() => handleSelectTool("text")}
         />
         <ToolButton
-          tool="image"
           icon={<Image size={20} />}
           isSelected={selectedTool === "image"}
           onSelect={() => handleSelectTool("image")}
         />
         <ToolButton
-          tool="rectangle"
           icon={<SquareDashed size={20} />}
           isSelected={selectedTool === "rectangle"}
           onSelect={() => handleSelectTool("rectangle")}
         />
         <ToolButton
-          tool="circle"
           icon={<CircleDashed size={20} />}
           isSelected={selectedTool === "circle"}
           onSelect={() => handleSelectTool("circle")}
         />
         <ToolButton
-          tool="line"
           icon={<SplinePointer size={20} />}
           isSelected={selectedTool === "line"}
           onSelect={() => handleSelectTool("line")}
         />
         <ToolButton
-          tool="icons"
           icon={<Ellipsis size={20} />}
           isSelected={selectedTool === "icons"}
           onSelect={() => handleSelectTool("icons")}
@@ -106,21 +125,12 @@ const ToolsBar = ({
 };
 
 interface ToolButtonProps {
-  tool:
-    | "pen"
-    | "erase"
-    | "text"
-    | "image"
-    | "rectangle"
-    | "circle"
-    | "line"
-    | "icons";
   icon: React.ReactNode;
   isSelected: boolean;
-  onSelect: (tool: ToolButtonProps["tool"]) => void;
+  onSelect: () => void;
 }
 
-const ToolButton = ({ tool, icon, isSelected, onSelect }: ToolButtonProps) => {
+const ToolButton = ({icon, isSelected, onSelect }: ToolButtonProps) => {
   return (
     <button
       className={`p-3 rounded-md ${
@@ -129,7 +139,7 @@ const ToolButton = ({ tool, icon, isSelected, onSelect }: ToolButtonProps) => {
           : "bg-fill hover:bg-fill-hover"
       }
       cursor-pointer flex items-center justify-center transition-all duration-200`}
-      onClick={() => onSelect(tool)}
+      onClick={onSelect}
     >
       {icon}
     </button>

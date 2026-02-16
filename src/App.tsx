@@ -4,16 +4,20 @@ import { type Map, mapsInfo } from "@/lib/mapInfo";
 import HeroBar from "@/components/heroBar/HeroBar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { useStageContext } from "./providers/AppProvider";
+import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 
 function App() {
-  const { setInitialStageSettings, clearElements } = useStageContext();
+  const { setInitialStageSettings, clearElements, clearHistory } = useStageContext();
 
   const [currentMap, setCurrentMap] = useState<Map>(mapsInfo[0]);
 
   useEffect(() => {
     setInitialStageSettings(currentMap);
     clearElements();
+    clearHistory();
   }, [currentMap]);
+
+  useKeyboardShortcuts();
 
   return (
     <div className="w-screen h-screen flex flex-col text-text">

@@ -1,18 +1,18 @@
+import { useStageContext } from "@/providers/AppProvider"
+import BrushTypeSelector, { type BrushType } from "./BrushTypeSelector";
 import ValueSlider from "@/components/base/ValueSlider";
-import BrushTypeSelector from "./BrushTypeSelector";
-import { useStageContext } from "@/providers/AppProvider";
-import { type BrushType } from './BrushTypeSelector';
 import ColorOptions from "./ColorOptions";
 
-const PenTool = () => {
 
-  const {toolSettings, setToolSettings} = useStageContext();
+const ShapeTool = () => {
+
+  const {toolSettings, setToolSettings} = useStageContext()
 
   const handleOpacityChange = (value: number[]) => {
     setToolSettings({
       ...toolSettings,
-      pen: {
-        ...toolSettings.pen,
+      shape: {
+        ...toolSettings.shape,
         opacity: value[0],
       }
     });
@@ -21,9 +21,9 @@ const PenTool = () => {
   const handleBrushSizeChange = (value: number[]) => {
     setToolSettings({
       ...toolSettings,
-      pen: {
-        ...toolSettings.pen,
-        brushSize: value[0] * 4,
+      shape: {
+        ...toolSettings.shape,
+        strokeWidth: value[0] * 4,
       }
     });
   }
@@ -31,8 +31,8 @@ const PenTool = () => {
   const handleSelectBrushType = (type: BrushType) => {
     setToolSettings({
       ...toolSettings,
-      pen: {
-        ...toolSettings.pen,
+      shape: {
+        ...toolSettings.shape,
         brushType: type,
       }
     });
@@ -41,8 +41,8 @@ const PenTool = () => {
   const handleSelectColor = (color: string) => {
     setToolSettings({
       ...toolSettings,
-      pen: {
-        ...toolSettings.pen,
+      shape: {
+        ...toolSettings.shape,
         color: color,
       }
     });
@@ -51,17 +51,17 @@ const PenTool = () => {
   return (
     <div className="my-2">
       {/* Brush Type */}
-      <BrushTypeSelector selectedBrushType={toolSettings.pen.brushType} onSelectBrushType={handleSelectBrushType} />
+      <BrushTypeSelector selectedBrushType={toolSettings.shape.brushType} onSelectBrushType={handleSelectBrushType} allowArrows={false}/>
 
       {/* Color Options */}
-      <ColorOptions selectedColor={toolSettings.pen.color} onSelectColor={handleSelectColor} />
+      <ColorOptions selectedColor={toolSettings.shape.color} onSelectColor={handleSelectColor} />
 
       {/* Opacity Slider */}
       <div className="w-full flex justify-between items-center mt-5">
         <label className="text-sm font-medium w-30">Opacity</label>
         <ValueSlider
           onValueChange={handleOpacityChange}
-          startingValue={toolSettings.pen.opacity}
+          startingValue={toolSettings.shape.opacity}
           min={0}
           max={100}
           step={10}
@@ -74,7 +74,7 @@ const PenTool = () => {
         <label className="text-sm font-medium w-30">Thickness</label>
         <ValueSlider
           onValueChange={handleBrushSizeChange}
-          startingValue={toolSettings.pen.brushSize / 4}
+          startingValue={toolSettings.shape.strokeWidth / 4}
           min={1}
           max={10}
           step={1}
@@ -82,10 +82,6 @@ const PenTool = () => {
       </div>
     </div>
   );
-};
+}
 
-
-
-
-
-export default PenTool;
+export default ShapeTool

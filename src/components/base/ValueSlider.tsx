@@ -1,20 +1,24 @@
 import { Slider, Tooltip } from "radix-ui";
-import { useState } from "react";
+import { useState, type FC } from 'react';
 
 interface ValueSliderProps {
   onValueChange: (value: number[]) => void;
+  startingValue?: number;
   min?: number;
   max?: number;
   step?: number;
+  type?: "percent" | "number";
 }
 
 const ValueSlider = ({
   onValueChange,
+  startingValue = 100,
   min = 0,
   max = 100,
   step = 1,
+  type = "number"
 }: ValueSliderProps) => {
-  const [value, setValue] = useState([100]);
+  const [value, setValue] = useState([startingValue]);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   const handleValueChange = (newValue: number[]) => {
@@ -56,7 +60,7 @@ const ValueSlider = ({
             align="center"
             sideOffset={8}
           >
-            {value[0]}%
+            {type === "percent" ? `${value[0]}%` : value[0]}
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>

@@ -2,6 +2,7 @@ import { User, Shapes, LineSquiggle, TextSelect, Image } from "lucide-react";
 import { useEffect, useState } from "react";
 import SidebarHeader from "./SidebarHeader";
 import { useAlertDialog } from "@/providers/AppProvider";
+import ComingSoon from "@/components/base/ComingSoon";
 
 const DeleteSection = () => {
   const showAlert = useAlertDialog();
@@ -18,7 +19,7 @@ const DeleteSection = () => {
   return (
     <div className="flex flex-col space-y-2">
       <SidebarHeader title="Delete" tooltip="Remove selected items" />
-      <DeleteButton
+      {/* <DeleteButton
         text="Everything"
         className="h-12 bg-accent!"
         onClick={onDeleteEverything}
@@ -30,7 +31,10 @@ const DeleteSection = () => {
         <DeleteButton icon={<LineSquiggle />} />
         <DeleteButton icon={<TextSelect />} />
         <DeleteButton icon={<Image />} />
-      </div>
+      </div> */}
+      <ComingSoon>
+        Mass Deleting tools are yet to be implemented. Coming soon.
+      </ComingSoon>
     </div>
   );
 };

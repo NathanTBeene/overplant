@@ -1,36 +1,37 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 
 interface CarouselProps {
   children: React.ReactNode[];
   itemsPerView?: number;
   className?: string;
+  itemWidth?: number;
 }
 
 const Carousel = ({
   children,
   itemsPerView = 3,
   className = "",
+  itemWidth = 70,
 }: CarouselProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemWidth, setItemWidth] = useState(0);
 
   const totalItems = children.length;
   const totalGroups = Math.ceil(totalItems / itemsPerView);
 
   // Calculate item width based on container width
-  useEffect(() => {
-    const updateItemWidth = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        setItemWidth(containerWidth / itemsPerView);
-      }
-    };
+  // useEffect(() => {
+  //   const updateItemWidth = () => {
+  //     if (containerRef.current) {
+  //       const containerWidth = containerRef.current.offsetWidth;
+  //       setItemWidth(containerWidth / itemsPerView);
+  //     }
+  //   };
 
-    updateItemWidth();
-    window.addEventListener("resize", updateItemWidth);
-    return () => window.removeEventListener("resize", updateItemWidth);
-  }, [itemsPerView]);
+  //   updateItemWidth();
+  //   window.addEventListener("resize", updateItemWidth);
+  //   return () => window.removeEventListener("resize", updateItemWidth);
+  // }, [itemsPerView]);
 
   const scrollToGroup = useCallback(
     (groupIndex: number) => {
@@ -64,7 +65,7 @@ const Carousel = ({
       onWheel={handleWheel}
     >
       <div
-        className="flex transition-transform duration-300 ease-out"
+        className="flex gap-4 transition-transform duration-300 ease-out"
         style={{
           transform: `translateX(${translateX}px)`,
           width: `${totalItems * itemWidth}px`,

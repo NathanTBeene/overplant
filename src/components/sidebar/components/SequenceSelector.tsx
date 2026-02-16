@@ -1,10 +1,11 @@
+import ComingSoon from "@/components/base/ComingSoon";
 import SidebarHeader from "./SidebarHeader";
 
 const SequenceSelector = () => {
   return (
     <div className="flex flex-col space-y-2">
       <SidebarHeader title="Sequence" tooltip="Select a sequence step" />
-      <div className="grid grid-cols-5 gap-2">
+      {/* <div className="grid grid-cols-5 gap-2">
         <SequenceButton number={1} />
         <SequenceButton number={2} />
         <SequenceButton number={3} />
@@ -15,7 +16,10 @@ const SequenceSelector = () => {
         <SequenceButton number={8} />
         <SequenceButton number={9} />
         <SequenceButton number={10} />
-      </div>
+      </div> */}
+      <ComingSoon>
+        Sequence editor coming soon!
+      </ComingSoon>
     </div>
   );
 };

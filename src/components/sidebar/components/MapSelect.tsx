@@ -25,7 +25,7 @@ const MapSelect = ({ selectedMap, onSelectMap }: MapSelectProps) => {
   const mapImage = (mapInfo: Map, onClick: () => void, className?: string) => {
     return (
       <div
-        className={`h-16 overflow-hidden rounded-sm relative hover:scale-102 transition-all cursor-pointer ${className}`}
+        className={`h-16 overflow-hidden rounded-sm relative hover:scale-102 transition-all duration-300 cursor-pointer ${className}`}
         onClick={onClick}
       >
         <h2 className="absolute inset-0 uppercase flex items-center z-10 justify-center text-white font-bold pointer-events-none text-shadow-lg text-shadow-background/30">
@@ -61,7 +61,7 @@ const MapSelect = ({ selectedMap, onSelectMap }: MapSelectProps) => {
       {/* Other Maps */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isExpanded ? "opacity-100" : "max-h-0 opacity-0"
+          isExpanded ? "opacity-100 max-h-150" : "max-h-0 opacity-0"
         }`}
       >
         <div className="flex flex-col space-y-2 p-1">

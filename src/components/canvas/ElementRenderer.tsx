@@ -1,6 +1,8 @@
-import { Line, Arrow, Rect, Circle, Text, Image } from "react-konva";
+import { Line, Arrow, Rect, Image, Ellipse } from "react-konva";
 import type { MapElement } from "./MapCanvas";
 import useImage from "use-image";
+import { useStageContext } from "@/providers/AppProvider";
+import type { KonvaEventObject } from "konva/lib/Node";
 
 interface ElementRendererProps {
   element: MapElement;
@@ -8,23 +10,53 @@ interface ElementRendererProps {
 }
 
 const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
-  const handleDragEnd = (e: any) => {
-    onDragEnd?.(element.id, e.target.x(), e.target.y());
-  };
+    const {activeTool, updateElement} = useStageContext();
+    const isToolActive = activeTool !== "none";
+
+    const [image] = useImage(element.type === "image" ? element.src ?? "" : "");
+
+
+    const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
+      const node = e.target;
+
+      if ((element.type === "line" || element.type === "arrow") && element.points) {
+        const offsetX = node.x();
+        const offsetY = node.y();
+
+        if (offsetX !== 0 || offsetY !== 0) {
+          const newPoints = element.points.map((val, i) =>
+            i % 2 === 0 ? val + offsetX : val + offsetY
+          );
+
+          node.x(0);
+          node.y(0);
+
+          updateElement(element.id, { points: newPoints });
+        }
+      } else {
+        onDragEnd?.(element.id, node.x(), node.y());
+      }
+    };
 
   const commonProps = {
     id: element.id,
-    draggable: element.draggable ?? false,
+    draggable: element.draggable && !isToolActive,
     onDragEnd: handleDragEnd,
-    onmouseenter: (e: any) => {
-      const container = e.target.getStage().container();
-      container.style.cursor = "pointer";
+    onmouseenter: (e: KonvaEventObject<MouseEvent>) => {
+      const stage = e.target.getStage();
+      if (!stage) return;
+      const container = stage.container();
+      container.style.cursor = isToolActive ? "default" : "move";
     },
-    onmouseleave: (e: any) => {
-      const container = e.target.getStage().container();
+    onmouseleave: (e: KonvaEventObject<MouseEvent>) => {
+      const stage = e.target.getStage();
+      if (!stage) return;
+      const container = stage.container();
       container.style.cursor = "default";
     },
   };
+
+  const opacity = element.opacity ? element.opacity / 100 : 1;
 
   switch (element.type) {
     case "line":
@@ -34,6 +66,8 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
           points={element.points ?? []}
           stroke={element.color}
           strokeWidth={element.strokeWidth ?? 2}
+          dash={element.dash}
+          opacity={opacity}
         />
       );
 
@@ -44,9 +78,11 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
           points={element.points ?? []}
           stroke={element.color}
           fill={element.color}
-          strokeWidth={element.strokeWidth ?? 2}
-          pointerLength={10}
-          pointerWidth={8}
+          strokeWidth={element.strokeWidth}
+          pointerLength={element.pointerLength ?? 10}
+          pointerWidth={element.pointerWidth ?? 8}
+          dash={element.dash}
+          opacity={opacity}
         />
       );
 
@@ -60,36 +96,32 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
           height={element.height ?? 100}
           fill={element.fill}
           stroke={element.color}
-          strokeWidth={element.strokeWidth ?? 1}
+          strokeWidth={element.strokeWidth}
+          cornerRadius={element.borderRadius}
+          dash={element.dash}
+          opacity={opacity}
         />
       );
 
     case "circle":
       return (
-        <Circle
+        <Ellipse
           {...commonProps}
           x={element.x ?? 0}
           y={element.y ?? 0}
-          radius={element.radius ?? 50}
-          radiusX={element.radiusX}
-          radiusY={element.radiusY}
+          radiusX={element.radiusX ?? element.radius ?? 50}
+          radiusY={element.radiusY ?? element.radius ?? 50}
           fill={element.fill}
           stroke={element.color}
-          strokeWidth={element.strokeWidth ?? 1}
+          strokeWidth={element.strokeWidth}
+          dash={element.dash}
+          opacity={opacity}
         />
       );
 
     case "text":
       return (
-        <Text
-          {...commonProps}
-          x={element.x ?? 0}
-          y={element.y ?? 0}
-          text={element.text ?? "Text"}
-          fontSize={element.fontSize ?? 16}
-          fontFamily={element.fontFamily ?? "Arial"}
-          fill={element.color}
-        />
+        <></>
       );
 
     case "image":
@@ -100,7 +132,7 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
           y={element.y ?? 0}
           width={element.width}
           height={element.height}
-          image={useImage(element.src ?? "")[0]}
+          image={image}
           fill={element.backgroundColor}
           cornerRadius={element.borderRadius}
         />

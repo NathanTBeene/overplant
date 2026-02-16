@@ -6,7 +6,6 @@ import TankIcon from "@/assets/icons/tank_icon.svg?react";
 import SupportIcon from "@/assets/icons/support_icon.svg?react";
 import { useRef, useState } from "react";
 import HeroBarSwitch from "./components/HeroBarSwitch";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
 import Carousel from "../base/Carousel";
 
 const HeroBar = () => {
@@ -61,7 +60,7 @@ const RoleCarousel = ({ role, isAlly }: RoleCarouselProps) => {
   ));
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex items-center gap-2">
       {/* Role Header */}
       <div className="flex flex-col items-center justify-center gap-2">
         <Icon
