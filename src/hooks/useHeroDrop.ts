@@ -57,6 +57,7 @@ export const useHeroDrop = () => {
       };
 
       useAppStore.getState().addElement(heroElement);
+      useAppStore.getState().setActiveTool("none");
     } catch (error) {
       console.error("Failed to parse dropped data:", error);
     }

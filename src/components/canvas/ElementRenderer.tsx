@@ -41,7 +41,14 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
           updateElement(element.id, { points: newPoints });
         }
       } else {
-        onDragEnd?.(element.id, node.x(), node.y());
+        let x = node.x();
+        let y = node.y();
+        // Undo the render-time offset added for counter-rotation on Defense
+        if (isDefense && element.type === "image") {
+          x -= (element.width ?? 0) / 2;
+          y -= (element.height ?? 0) / 2;
+        }
+        onDragEnd?.(element.id, x, y);
       }
     };
 

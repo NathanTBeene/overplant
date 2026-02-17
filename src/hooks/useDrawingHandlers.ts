@@ -34,7 +34,8 @@ export const useDrawingHandlers = () => {
 
     // Left Click with active tool = draw
     if (e.evt.button === 0 && activeTool !== "none") {
-      const pos = getStageCoords();
+      const { mapSide, mapImageSize } = useAppStore.getState();
+      const pos = getStageCoords(mapSide, mapImageSize);
 
       switch (activeTool) {
         case "pen":
@@ -104,7 +105,8 @@ export const useDrawingHandlers = () => {
     if (!isDrawing) return;
     if (!stageRef.current) return;
 
-    const pos = getStageCoords();
+    const { mapSide, mapImageSize } = useAppStore.getState();
+    const pos = getStageCoords(mapSide, mapImageSize);
     const lastElement = elements[elements.length - 1];
     if (!lastElement) return;
 
