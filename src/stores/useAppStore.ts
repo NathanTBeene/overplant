@@ -130,9 +130,9 @@ export interface AppState {
 
   // Map
   mapSide: "Attack" | "Defense";
-  mapName: string;
+  mapImageSize: { width: number; height: number };
   toggleMapSide: () => void;
-  setMapName: (name: string) => void;
+  setMapImageSize: (size: { width: number; height: number }) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -206,6 +206,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   setElements: (elements) => set({ elements }),
 
   addHero: (info) => {
+    const mapSide = get().mapSide;
+    const imageSize = get().mapImageSize;
     const stage = stageRef.current;
     if (!stage) return;
 
@@ -215,6 +217,12 @@ export const useAppStore = create<AppState>((set, get) => ({
     const canvasCoords = point
       ? transform.point(point)
       : { x: stage.width() / 2, y: stage.height() / 2 };
+
+    // If map is flipped, we need to flip the pointer coordinates as well
+    if (mapSide === "Defense") {
+      canvasCoords.x = imageSize.width - canvasCoords.x;
+      canvasCoords.y = imageSize.height - canvasCoords.y;
+    }
 
     const heroElement: MapElement = {
       id: `hero-${info.id}-${Math.random()}`,
@@ -306,37 +314,11 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   // Map
   mapSide: "Attack",
-  mapName: "Untitled Map",
-  toggleMapSide: () => {
-    set((s) => {
-      const newSide = s.mapSide === "Attack" ? "Defense" : "Attack";
-      const stage = stageRef.current;
-      if (!stage) return { mapSide: newSide };
+  toggleMapSide: () => set((s) => ({
+    mapSide: s.mapSide === "Attack" ? "Defense" : "Attack"
+  })),
 
-      const mapImage = stage.findOne("Image");
-      if (!mapImage) return { mapSide: newSide };
+  mapImageSize: { width: 0, height: 0 },
+  setMapImageSize: (size) => set({ mapImageSize: size }),
 
-      const imageWidth = mapImage.width() || 0;
-      const imageHeight = mapImage.height() || 0;
-
-      // Push current to history before flipping
-      const past = [...s.past];
-      if (past.length >= MAX_HISTORY_SIZE) past.shift();
-      past.push(s.elements);
-
-      const flippedElements = s.elements.map((el) => ({
-        ...el,
-        x: imageWidth - (el.x || 0) - (el.width || 0),
-        y: imageHeight - (el.y || 0) - (el.height || 0),
-      }));
-
-      return {
-        mapSide: newSide,
-        elements: flippedElements,
-        past
-      }
-    });
-  },
-
-  setMapName: (name) => set({ mapName: name })
 }));

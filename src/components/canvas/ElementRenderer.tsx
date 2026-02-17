@@ -12,6 +12,8 @@ interface ElementRendererProps {
 const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
     const activeTool = useAppStore((s) => s.activeTool);
     const updateElement = useAppStore((s) => s.updateElement);
+    const mapSide = useAppStore((s) => s.mapSide);
+    const isDefense = mapSide === "Defense";
 
 
     const isToolActive = activeTool !== "none";
@@ -134,13 +136,18 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
       return (
         <Image
           {...commonProps}
-          x={element.x ?? 0}
-          y={element.y ?? 0}
+          // Shift x/y to compensate for flipping
+          x={(element.x ?? 0) + (isDefense ? (element.width ?? 0) / 2 : 0)}
+          y={(element.y ?? 0) + (isDefense ? (element.height ?? 0) / 2 : 0)}
           width={element.width}
           height={element.height}
           image={image}
           fill={element.backgroundColor}
           cornerRadius={element.borderRadius}
+          // Counter Rotate so images stay upright when map is flipped
+          rotation={isDefense ? 180 : 0}
+          offsetX={isDefense ? (element.width ?? 0) / 2 : 0}
+          offsetY={isDefense ? (element.height ?? 0) / 2 : 0}
         />
       );
 

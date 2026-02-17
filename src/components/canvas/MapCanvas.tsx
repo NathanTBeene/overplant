@@ -24,6 +24,7 @@ interface MapCanvasProps {
 const MapCanvas = ({ map }: MapCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // App State
   const stageScale = useAppStore((s) => s.stageScale);
   const stagePosition = useAppStore((s) => s.stagePosition);
   const stageDimensions = useAppStore((s) => s.stageDimensions);
@@ -35,11 +36,16 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   const updateElement = useAppStore((s) => s.updateElement);
   const isDrawing = useAppStore((s) => s.isDrawing);
   const activeTool = useAppStore((s) => s.activeTool);
+  const isDefense = useAppStore((s) => s.mapSide === "Defense");
+  const imageWidth = useAppStore((s) => s.mapImageSize.width);
+  const imageHeight = useAppStore((s) => s.mapImageSize.height);
 
+  // Handlers
   const { handleMouseDown, handleMouseMove, handleMouseUp } = useDrawingHandlers();
   const { handleWheel, handleDragStart, handleDragMove, handleDragEnd, isDragging } = useStageInteraction();
   const { handleDragOver, handleDrop } = useHeroDrop();
 
+  // Dialogs
   const showModal = useModalDialog();
   const { exportMap, importMap } = useMapImportExportDialog();
 
@@ -190,7 +196,13 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
         <Layer>
           <MapImage src={map.mapImage} />
         </Layer>
-        <Layer>
+        <Layer
+          rotation={isDefense ? 180 : 0}
+          offsetX={isDefense ? imageWidth/2 : 0}
+          offsetY={isDefense ? imageHeight/2 : 0}
+          x={isDefense ? imageWidth/2 : 0}
+          y={isDefense ? imageHeight/2 : 0}
+        >
           {elements.filter((el) => el.type !== "text").map((element) => (
             <ElementRenderer
               key={element.id}

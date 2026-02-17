@@ -1,3 +1,4 @@
+import { useAppStore } from "@/stores/useAppStore";
 import type { MapElement } from "@/types/MapElement";
 import { useEffect, useRef, useState } from "react";
 import { useCallback } from 'react';
@@ -26,6 +27,17 @@ const TextElement = ({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [width, setWidth] = useState(element.width ?? 200);
   const [text, setText] = useState(element.text ?? "");
+
+  const mapSide = useAppStore((s) => s.mapSide);
+  const mapImageSize = useAppStore((s) => s.mapImageSize);
+  const activeTool = useAppStore((s) => s.activeTool);
+  const isToolActive = activeTool !== "none";
+
+  const isDefense = mapSide === "Defense";
+  const visualX = isDefense ? mapImageSize.width - (element.x ?? 0) : (element.x ?? 0);
+  const visualY = isDefense ? mapImageSize.height - (element.y ?? 0) : (element.y ?? 0);
+  const screenX = visualX * stageScale + stagePosition.x;
+  const screenY = visualY * stageScale + stagePosition.y;
 
   const handleInput = useCallback(() => {
     const textarea = textareaRef.current;
@@ -69,6 +81,14 @@ const TextElement = ({
     onUpdate(element.id, { text: e.target.value });
     handleInput();
   }
+
+  // Measure and Store rendered height
+  useEffect(() => {
+    const el = isEditing ? textareaRef.current : displayRef.current;
+    if (el) {
+      onUpdate(element.id, { height: el.offsetHeight * 3 });
+    }
+  }, [text, width, isEditing, onUpdate, element.id]);
 
   useEffect(() => {
     if (isEditing) {
@@ -116,8 +136,9 @@ const TextElement = ({
           handleInput();
         }
       } else if (isDragging) {
-        const dx = (e.clientX - dragStart.x) / stageScale;
-        const dy = (e.clientY - dragStart.y) / stageScale;
+        const sign = isDefense ? -1 : 1;
+        const dx = sign * (e.clientX - dragStart.x) / stageScale;
+        const dy = sign * (e.clientY - dragStart.y) / stageScale;
 
         onUpdate(element.id, {
           x: (element.x ?? 0) + dx,
@@ -142,10 +163,7 @@ const TextElement = ({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isResizing, isDragging, startX, startWidth, isEditing, dragStart, stageScale, element.id, element.x, element.y, onUpdate, handleInput]);
-
-  const screenX = (element.x ?? 0) * stageScale + stagePosition.x;
-  const screenY = (element.y ?? 0) * stageScale + stagePosition.y;
+  }, [isResizing, isDragging, startX, startWidth, isEditing, dragStart, stageScale, element.id, element.x, element.y, onUpdate, handleInput, isDefense]);
 
   return (
     <div
@@ -154,9 +172,10 @@ const TextElement = ({
       style={{
         left: `${screenX}px`,
         top: `${screenY}px`,
-        transform: `scale(${stageScale * 3})`,
+        transform: `scale(${stageScale * 3}) translate(-50%, -50%)`,
         transformOrigin: 'top left',
         cursor: isDragging ? 'grabbing' : isEditing ? 'default' : 'grab',
+        pointerEvents: isToolActive ? 'none' : 'auto',
       }}
       onDoubleClick={handleDoubleClick}
       onMouseDown={handleMouseDown}

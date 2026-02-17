@@ -18,6 +18,8 @@ export const useHeroDrop = () => {
       const isAlly = e.dataTransfer.getData("application/isAlly") === "true";
       const hero: HeroInfo = JSON.parse(heroData);
 
+      const mapSide = useAppStore.getState().mapSide;
+      const imageSize = useAppStore.getState().mapImageSize;
       const stage = stageRef.current;
       if (!stage) return;
 
@@ -29,6 +31,12 @@ export const useHeroDrop = () => {
         x: (clientX - stage.x()) / stage.scaleX(),
         y: (clientY - stage.y()) / stage.scaleX(),
       };
+
+      // If map is flipped, we need to flip the pointer coordinates as well
+      if (mapSide === "Defense") {
+        canvasCoords.x = imageSize.width - canvasCoords.x;
+        canvasCoords.y = imageSize.height - canvasCoords.y;
+      }
 
       const styles = getComputedStyle(document.documentElement);
       const backgroundColor = isAlly

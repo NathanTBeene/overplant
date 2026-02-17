@@ -1,3 +1,4 @@
+import Tooltip from "@/components/ui/Tooltip";
 import { Info } from "lucide-react";
 
 interface SidebarHeaderProps {
@@ -9,7 +10,13 @@ const SidebarHeader = ({ title, tooltip }: SidebarHeaderProps) => {
   return (
     <div className="flex justify-between items-center">
       <h1 className="text-2xl font font-semibold">{title}</h1>
-      {tooltip && <Info size={18} />}
+      {tooltip &&
+        <Tooltip
+          content={tooltip}
+        >
+          <Info size={18} className="text-gray-500" />
+        </Tooltip>
+      }
     </div>
   );
 };

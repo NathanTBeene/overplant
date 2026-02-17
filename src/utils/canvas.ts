@@ -3,18 +3,28 @@ import type { PenSettings, ShapeSettings } from "@/stores/useAppStore";
 import type { MapElement } from "@/types/MapElement";
 
 // Convert current pointer position to stage coordinates, accounting for zoom and pan
-export const getStageCoords = (): { x: number; y: number } => {
+export const getStageCoords = (mapSide: string, imageSize: { width: number; height: number }): { x: number; y: number } => {
   const stage = stageRef.current;
   if (!stage) return { x: 0, y: 0 };
 
   const pos = stage.getPointerPosition();
   if (!pos) return { x: 0, y: 0 };
 
-  return {
+  // First: convert screen coords to canvas coords
+  const coords = {
     x: (pos.x - stage.x()) / stage.scaleX(),
     y: (pos.y - stage.y()) / stage.scaleY(),
   };
-}
+
+  // Then: flip to canonical space if on Defense
+  if (mapSide === "Defense") {
+    coords.x = imageSize.width - coords.x;
+    coords.y = imageSize.height - coords.y;
+  }
+
+  return coords;
+};
+
 
 const BASE_BRUSH_SIZE = 16;
 
@@ -93,6 +103,18 @@ export const hitTestElement = (
     // Rectangle - bounding box test
     const elWidth = element.width || (element.radiusX ? element.radiusX * 2 : 0);
     const elHeight = element.height || (element.radiusY ? element.radiusY * 2 : 0);
+
+    if (element.type === "text") {
+      const halfW = (elWidth * 3) / 2;
+      const halfH = elHeight / 2;  // already canvas-space (stored as offsetHeight * 3)
+      return (
+        pos.x >= element.x - halfW &&
+        pos.x <= element.x + halfW &&
+        pos.y >= element.y - halfH &&
+        pos.y <= element.y + halfH
+      );
+    }
+
     return (
       pos.x >= element.x &&
       pos.x <= element.x + elWidth &&
