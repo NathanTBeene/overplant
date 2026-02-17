@@ -1,7 +1,7 @@
 import { useAppStore } from "@/stores/useAppStore"
+import { useUIStore } from "@/stores/useUIStore";
 import useFileDialog from "./useFileDialog";
 import { useCallback } from "react";
-import type { useAlert } from "./useAlert";
 import { encryptData, decryptData } from "@/utils/crypt";
 
 interface ExportData {
@@ -10,10 +10,11 @@ interface ExportData {
   version: string;
 }
 
-const useMapImportExport = (showAlert: ReturnType<typeof useAlert>["showAlert"]) => {
+const useMapImportExport = () => {
   const  { openFileDialog } = useFileDialog();
   const elements = useAppStore((state) => state.elements);
   const setElements = useAppStore((state) => state.setElements);
+  const showAlert = useUIStore((state) => state.showAlert);
 
   const exportMap = useCallback(async (mapName: string) => {
     const exportData: ExportData = {

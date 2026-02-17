@@ -2,15 +2,14 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles/index.css";
 import App from "./App.tsx";
-import { AppProvider } from "./providers/AppProvider";
+import UIDialogs from "./components/ui/UIDialogs";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Tooltip.Provider>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <App />
+      <UIDialogs />
     </Tooltip.Provider>
   </StrictMode>
 );

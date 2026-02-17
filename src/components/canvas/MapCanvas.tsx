@@ -13,7 +13,8 @@ import { useStageInteraction } from "@/hooks/useStageInteraction";
 import { useHeroDrop } from "@/hooks/useHeroDrop";
 import { Settings, ArrowDownToLine, FileUp } from "lucide-react";
 import SettingsModal from "../base/SettingsModal";
-import { useMapImportExportDialog, useModalDialog } from "@/providers/AppProvider";
+import { useUIStore } from "@/stores/useUIStore";
+import useMapImportExport from "@/hooks/useMapImportExport";
 import Tooltip from '../ui/Tooltip';
 
 interface MapCanvasProps {
@@ -45,8 +46,8 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   const { handleDragOver, handleDrop } = useHeroDrop();
 
   // Dialogs
-  const showModal = useModalDialog();
-  const { exportMap, importMap } = useMapImportExportDialog();
+  const showModal = useUIStore((s) => s.openModal);
+  const { exportMap, importMap } = useMapImportExport();
 
   // Delete selected element on Delete / Backspace
   useEffect(() => {
