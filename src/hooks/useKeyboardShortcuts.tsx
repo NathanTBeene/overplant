@@ -11,7 +11,7 @@ import { useEffect } from "react";
 // - Rectangle Tool: R
 // - Circle Tool: C
 // - Line Tool: L
-// - Icons Tool: O
+// - Icons Tool: K
 // - Clear Tools: Esc
 // - Delete Selected Element: Delete / Backspace (Handled in MapCanvas)
 
@@ -75,7 +75,7 @@ const useKeyboardShortcuts = () => {
         case 'l':
           setActiveTool(activeTool === "line" ? "none" : "line");
           break;
-        case 'o':
+        case 'k':
           setActiveTool(activeTool === "icons" ? "none" : "icons");
           break;
         case 'escape':

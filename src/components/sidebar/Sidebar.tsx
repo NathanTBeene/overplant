@@ -29,8 +29,8 @@ const Sidebar = ({ selectedMap, onSelectMap }: SidebarProps) => {
 
   return (
     <ScrollArea.Root className="bg-background-secondary w-75 flex flex-col border-r border-border gap-8 h-full">
-      <ScrollArea.Viewport className="flex-1 pt-4 pb-4">
-        <div className="px-4 flex flex-col gap-8">
+      <ScrollArea.Viewport className="flex flex-col flex-1 pt-4 pb-4">
+        <div className="px-4 flex flex-col gap-8 flex-1">
           <MapSelect selectedMap={selectedMap} onSelectMap={onSelectMap} />
           <SequenceSelector />
           <DeleteSection />

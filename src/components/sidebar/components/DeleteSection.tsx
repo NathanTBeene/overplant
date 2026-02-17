@@ -16,7 +16,7 @@ const DeleteSection = () => {
 
   return (
     <div className="flex flex-col space-y-2">
-      <SidebarHeader title="Delete" tooltip="Remove selected items" />
+      <SidebarHeader title="Delete" />
       {/* <DeleteButton
         text="Everything"
         className="h-12 bg-accent!"
