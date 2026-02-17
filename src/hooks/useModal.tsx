@@ -57,7 +57,7 @@ const useModal = () => {
 
         <Dialog.Content
           ref={contentRef}
-          className="bg-background-secondary rounded-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 z-100 min-w-80 shadow-lg text-text DialogContent"
+          className="bg-background-secondary rounded-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 z-100 min-w-80 shadow-lg text-text DialogContent"
         >
           {state.showCloseButton && (
             <Dialog.Close asChild>

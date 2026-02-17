@@ -11,7 +11,7 @@ const Switch = ({
 }: SwitchProps) => {
   return (
     <RSwitch.Root
-      className='w-10 h-6 bg-fill-hover shadow-md rounded-full relative data-[state=checked]:bg-accent-active transition-colors'
+      className='w-10 h-6 bg-fill shadow-md rounded-full relative data-[state=checked]:bg-accent-active transition-colors hover:cursor-pointer hover:bg-fill-hover'
       checked={checked}
       onCheckedChange={onCheckedChange}
     >

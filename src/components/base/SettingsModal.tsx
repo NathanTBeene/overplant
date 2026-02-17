@@ -45,7 +45,8 @@ const SettingsModal = () => {
 
   return (
     <div className='min-w-100 min-h-100'>
-      <h1 className="font-bold text-3xl mb-4">Settings</h1>
+      <h1 className="font-bold text-3xl">Settings</h1>
+      <p className="text-gray-500 text-sm mb-10">Settings will persist in local storage.</p>
 
       <SettingsOption
         name="Debug Panel"
