@@ -45,7 +45,7 @@ export const useHeroDrop = () => {
 
       const heroElement: MapElement = {
         id: `hero-${hero.id}-${Math.random()}`,
-        type: "image",
+        type: "hero",
         x: canvasCoords.x - 40,
         y: canvasCoords.y - 40,
         src: hero.portrait,

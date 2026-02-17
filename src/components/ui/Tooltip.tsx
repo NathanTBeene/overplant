@@ -15,6 +15,11 @@ interface TooltipProps {
 }
 
 const Tooltip = ({ content, children, properties, styleOverrides }: TooltipProps) => {
+
+  if (!content || content === '') {
+    return <>{children}</>;
+  }
+
   return (
     <RTooltip.Root delayDuration={properties?.delay || 500}>
       <RTooltip.Trigger asChild>{children}</RTooltip.Trigger>

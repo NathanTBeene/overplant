@@ -18,7 +18,7 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
 
     const isToolActive = activeTool !== "none";
 
-    const [image] = useImage(element.type === "image" ? element.src ?? "" : "");
+    const [image] = useImage((element.type === "image" || element.type === "hero") ? element.src ?? "" : "");
 
 
     const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
@@ -44,7 +44,7 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
         let x = node.x();
         let y = node.y();
         // Undo the render-time offset added for counter-rotation on Defense
-        if (isDefense && element.type === "image") {
+        if (isDefense && (element.type === "image" || element.type === "hero")) {
           x -= (element.width ?? 0) / 2;
           y -= (element.height ?? 0) / 2;
         }
@@ -140,6 +140,24 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
       );
 
     case "image":
+      return (
+        <Image
+          {...commonProps}
+          // Shift x/y to compensate for flipping
+          x={(element.x ?? 0) + (isDefense ? (element.width ?? 0) / 2 : 0)}
+          y={(element.y ?? 0) + (isDefense ? (element.height ?? 0) / 2 : 0)}
+          width={element.width}
+          height={element.height}
+          image={image}
+          fill={element.backgroundColor}
+          cornerRadius={element.borderRadius}
+          // Counter Rotate so images stay upright when map is flipped
+          rotation={isDefense ? 180 : 0}
+          offsetX={isDefense ? (element.width ?? 0) / 2 : 0}
+          offsetY={isDefense ? (element.height ?? 0) / 2 : 0}
+        />
+      );
+    case "hero":
       return (
         <Image
           {...commonProps}

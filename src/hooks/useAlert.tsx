@@ -19,12 +19,14 @@ interface AlertDialogState {
   description: string;
   type: AlertType;
   resolve: ((value: AlertResponse<AlertType>) => void) | null;
+  required?: boolean;
 }
 
 interface AlertOptions {
   title: string;
   description: string;
   type?: AlertType;
+  required?: boolean; // User is required to make a choice (can't click outside to dismiss)
 }
 
 export const useAlert = () => {
@@ -47,6 +49,7 @@ export const useAlert = () => {
           description: options.description,
           type: options.type || "yes-no-cancel",
           resolve: (response: string) => resolve(response as AlertResponse<T>),
+          required: options.required,
         });
       });
     },
@@ -158,7 +161,14 @@ export const useAlert = () => {
   };
 
   const handleClickOutside = () => {
-    if (dialogState.type !== "ok") {
+    if (dialogState.required) {
+      // Do nothing, user must click the button
+      return;
+    }
+    // Treat clicking outside as "cancel" for all types except "ok"
+    if (dialogState.type === "ok") {
+      handleResponse("ok");
+    } else {
       handleResponse("cancel");
     }
   };
