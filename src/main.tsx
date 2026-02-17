@@ -7,10 +7,10 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AppProvider>
-      <Tooltip.Provider>
+    <Tooltip.Provider>
+      <AppProvider>
         <App />
-      </Tooltip.Provider>
-    </AppProvider>
+      </AppProvider>
+    </Tooltip.Provider>
   </StrictMode>
 );
