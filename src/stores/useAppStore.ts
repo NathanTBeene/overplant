@@ -5,7 +5,6 @@ import { getInitialMapSettings, type Map } from "@/lib/mapInfo";
 import {create} from "zustand";
 import { stageRef } from "./stageRef";
 import type { MapElement } from "@/types/MapElement";
-import useLocalStorage from "@/hooks/useLocalStorage";
 
 /* ------------------------------ TOOL SETTINGS ----------------------------- */
 

@@ -1,6 +1,5 @@
 import { User, Shapes, LineSquiggle, TextSelect, Image } from "lucide-react";
 import SidebarHeader from "./SidebarHeader";
-import ComingSoon from "@/components/base/ComingSoon";
 import { useAlertDialog } from "@/providers/AppProvider";
 import { useAppStore } from "@/stores/useAppStore";
 import Tooltip from '@/components/ui/Tooltip';
@@ -10,7 +9,7 @@ const DeleteSection = () => {
   const showAlert = useAlertDialog();
   // const [currentSequence, setCurrentSequence] = useState<number>(1);
 
-  const { elements, setElements, removeElement, clearElements } = useAppStore.getState();
+  const { elements, removeElement, clearElements } = useAppStore.getState();
 
   const onDeleteEverything = async () => {
     const response = await showAlert({
