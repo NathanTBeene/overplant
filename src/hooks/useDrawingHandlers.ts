@@ -212,7 +212,7 @@ export const useDrawingHandlers = () => {
       updateElement,
       setIsDrawing,
       endBatch,
-      setActiveTool,
+      // setActiveTool,
       setSelectedElementId,
     } = useAppStore.getState();
 
@@ -224,7 +224,7 @@ export const useDrawingHandlers = () => {
       setIsDrawing(false);
       endBatch();
       drawStartPos.current = null;
-      setActiveTool("none");
+      // setActiveTool("none"); // TODO: Need user feedback on whether to keep tool active after drawing or not
       setSelectedElementId(null);
     }
 
