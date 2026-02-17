@@ -4,7 +4,7 @@ import DeleteSection from "./components/DeleteSection";
 import ToolsBar, { type ToolType } from "./components/ToolsBar";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import type { Map } from "@/lib/mapInfo";
-import { useStageContext } from "@/providers/AppProvider";
+import { useAppStore } from "@/stores/useAppStore";
 
 interface SidebarProps {
   selectedMap: Map;
@@ -13,7 +13,8 @@ interface SidebarProps {
 
 const Sidebar = ({ selectedMap, onSelectMap }: SidebarProps) => {
 
-  const {activeTool, setActiveTool} = useStageContext();
+  const activeTool = useAppStore((s) => s.activeTool);
+  const setActiveTool = useAppStore((s) => s.setActiveTool);
 
 
   const handleSelectTool = (tool: ToolType) => {

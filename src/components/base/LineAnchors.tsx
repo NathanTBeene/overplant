@@ -1,7 +1,7 @@
-import { useStageContext } from "@/providers/AppProvider";
+import { useAppStore } from "@/stores/useAppStore";
+import type { MapElement } from "@/types/MapElement";
 import type { KonvaEventObject } from "konva/lib/Node";
 import { Circle, Group } from "react-konva";
-import type { MapElement } from "../canvas/MapCanvas";
 
 interface LineAnchorsProps {
   element: MapElement;
@@ -10,14 +10,15 @@ interface LineAnchorsProps {
 }
 
 const LineAnchors = ({ element, onPointMove, stageScale = 1 }: LineAnchorsProps) => {
-  const { toolSettings } = useStageContext();
+
+  const penSettings = useAppStore((s) => s.toolSettings.pen);
 
 
   if (!element.points || element.points.length === 0) return null;
 
   // Freehand lines may have many points; limit anchors to every Nth point for performance
-  const maxAnchors = toolSettings.pen.maxAnchors;
-  const minStep = toolSettings.pen.minAnchorStep;
+  const maxAnchors = penSettings.maxAnchors;
+  const minStep = penSettings.minAnchorStep;
   const pointCount = element.points.length / 2;
 
   const getAnchorPointIndices = () => {

@@ -1,5 +1,5 @@
 import type { HeroInfo } from "@/lib/heroInfo";
-import { useStageContext } from "@/providers/AppProvider";
+import { useAppStore } from "@/stores/useAppStore";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -10,7 +10,7 @@ const HeroPortrait = ({
   hero: HeroInfo;
   isAlly: boolean;
 }) => {
-  const { stageScale } = useStageContext();
+  const stageScale = useAppStore((s) => s.stageScale);
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragPosition, setDragPosition] = useState<{ x: number; y: number }>({

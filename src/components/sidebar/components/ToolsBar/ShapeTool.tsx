@@ -1,12 +1,13 @@
-import { useStageContext } from "@/providers/AppProvider"
 import BrushTypeSelector, { type BrushType } from "./BrushTypeSelector";
 import ValueSlider from "@/components/base/ValueSlider";
 import ColorOptions from "./ColorOptions";
+import { useAppStore } from "@/stores/useAppStore";
 
 
 const ShapeTool = () => {
 
-  const {toolSettings, setToolSettings} = useStageContext()
+  const toolSettings = useAppStore((s) => s.toolSettings);
+  const setToolSettings = useAppStore((s) => s.setToolSettings);
 
   const handleOpacityChange = (value: number[]) => {
     setToolSettings({

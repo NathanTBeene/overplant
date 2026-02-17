@@ -3,11 +3,13 @@ import MapCanvas from "./components/canvas/MapCanvas";
 import { type Map, mapsInfo } from "@/lib/mapInfo";
 import HeroBar from "@/components/heroBar/HeroBar";
 import Sidebar from "@/components/sidebar/Sidebar";
-import { useStageContext } from "./providers/AppProvider";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
+import { useAppStore } from "./stores/useAppStore";
 
 function App() {
-  const { setInitialStageSettings, clearElements, clearHistory } = useStageContext();
+  const setInitialStageSettings = useAppStore((s) => s.setInitialStageSettings);
+  const clearElements = useAppStore((s) => s.clearElements);
+  const clearHistory = useAppStore((s) => s.clearHistory);
 
   const [currentMap, setCurrentMap] = useState<Map>(mapsInfo[0]);
 
@@ -15,7 +17,7 @@ function App() {
     setInitialStageSettings(currentMap);
     clearElements();
     clearHistory();
-  }, [currentMap]);
+  }, [clearElements, clearHistory, currentMap, setInitialStageSettings]);
 
   useKeyboardShortcuts();
 

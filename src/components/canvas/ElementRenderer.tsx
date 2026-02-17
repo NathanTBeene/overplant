@@ -1,8 +1,8 @@
 import { Line, Arrow, Rect, Image, Ellipse } from "react-konva";
-import type { MapElement } from "./MapCanvas";
 import useImage from "use-image";
-import { useStageContext } from "@/providers/AppProvider";
 import type { KonvaEventObject } from "konva/lib/Node";
+import type { MapElement } from "@/types/MapElement";
+import { useAppStore } from "@/stores/useAppStore";
 
 interface ElementRendererProps {
   element: MapElement;
@@ -10,7 +10,9 @@ interface ElementRendererProps {
 }
 
 const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
-    const {activeTool, updateElement} = useStageContext();
+    const activeTool = useAppStore((s) => s.activeTool);
+    const updateElement = useAppStore((s) => s.updateElement);
+
     const isToolActive = activeTool !== "none";
 
     const [image] = useImage(element.type === "image" ? element.src ?? "" : "");
@@ -18,6 +20,8 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
 
     const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
       const node = e.target;
+      const { elements, pushToHistory } = useAppStore.getState();
+      pushToHistory(elements);
 
       if ((element.type === "line" || element.type === "arrow") && element.points) {
         const offsetX = node.x();

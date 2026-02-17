@@ -1,9 +1,9 @@
 import type Konva from "konva";
-import type { MapElement } from "../canvas/MapCanvas";
 import { useEffect, useRef } from "react";
 import { Transformer } from "react-konva";
 import LineAnchors from "./LineAnchors";
-import { useStageContext } from "@/providers/AppProvider";
+import type { MapElement } from "@/types/MapElement";
+import { useAppStore } from "@/stores/useAppStore";
 
 interface SelectionTransformerProps {
   selectedElement: MapElement | null;
@@ -19,7 +19,8 @@ const SelectionTransformer = ({
   stageScale = 1,
 }: SelectionTransformerProps) => {
   const transformerRef = useRef<Konva.Transformer>(null);
-  const {toolSettings}  = useStageContext();
+
+  const penSettings = useAppStore((s) => s.toolSettings.pen);
 
   useEffect(() => {
     if (!transformerRef.current || !stageRef?.current) return;
@@ -87,8 +88,8 @@ const SelectionTransformer = ({
     const pointCount = points.length / 2;
 
     // Get Anchor indices
-    const maxAnchors = toolSettings.pen.maxAnchors;
-    const minStep = toolSettings.pen.minAnchorStep;
+    const maxAnchors = penSettings.maxAnchors;
+    const minStep = penSettings.minAnchorStep;
     let anchorIndices: number[] = [];
     if (pointCount <= maxAnchors) {
       anchorIndices = Array.from({ length: pointCount }, (_, i) => i);

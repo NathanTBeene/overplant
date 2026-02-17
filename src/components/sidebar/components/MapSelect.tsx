@@ -1,5 +1,5 @@
 import { mapsInfo, type Map } from "@/lib/mapInfo";
-import { useStageContext } from "@/providers/AppProvider";
+import { useAppStore } from "@/stores/useAppStore";
 import { RotateCw, ArrowLeftRight } from "lucide-react";
 import { useState } from "react";
 
@@ -11,7 +11,8 @@ interface MapSelectProps {
 const MapSelect = ({ selectedMap, onSelectMap }: MapSelectProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const { mapSide, toggleMapSide } = useStageContext();
+  const mapSide = useAppStore((s) => s.mapSide);
+  const toggleMapSide = useAppStore((s) => s.toggleMapSide);
 
   const handleMapSelect = (map: Map) => {
     setIsExpanded(false);

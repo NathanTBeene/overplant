@@ -1,12 +1,14 @@
 import ValueSlider from "@/components/base/ValueSlider";
 import BrushTypeSelector from "./BrushTypeSelector";
-import { useStageContext } from "@/providers/AppProvider";
 import { type BrushType } from './BrushTypeSelector';
 import ColorOptions from "./ColorOptions";
+import { useAppStore } from "@/stores/useAppStore";
 
 const PenTool = () => {
 
-  const {toolSettings, setToolSettings} = useStageContext();
+
+  const toolSettings = useAppStore((s) => s.toolSettings);
+  const setToolSettings = useAppStore((s) => s.setToolSettings);
 
   const handleOpacityChange = (value: number[]) => {
     setToolSettings({

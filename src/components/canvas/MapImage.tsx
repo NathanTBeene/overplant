@@ -1,11 +1,12 @@
-import { useStageContext } from "@/providers/AppProvider";
+import { useAppStore } from "@/stores/useAppStore";
 import { Image } from "react-konva";
 import useImage from "use-image";
 
 const MapImage = ({ src }: { src: string }) => {
   const [image] = useImage(src);
 
-  const { mapSide } = useStageContext();
+  const mapSide = useAppStore((s) => s.mapSide);
+
 
   const scale = mapSide == "Defense" ? -1 : 1;
   const offsetx = mapSide == "Defense" ? image?.width ?? 0 : 0;

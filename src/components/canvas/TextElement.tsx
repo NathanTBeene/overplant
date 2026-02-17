@@ -1,5 +1,5 @@
+import type { MapElement } from "@/types/MapElement";
 import { useEffect, useRef, useState } from "react";
-import type { MapElement } from "./MapCanvas";
 import { useCallback } from 'react';
 
 interface TextElementProps {

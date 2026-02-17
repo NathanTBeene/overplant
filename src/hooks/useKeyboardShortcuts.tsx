@@ -1,4 +1,4 @@
-import { useStageContext } from "@/providers/AppProvider"
+import { useAppStore } from "@/stores/useAppStore";
 import { useEffect } from "react";
 
 // Keyboard Shortcuts
@@ -17,7 +17,13 @@ import { useEffect } from "react";
 
 
 const useKeyboardShortcuts = () => {
-  const {undo, redo, canUndo, canRedo, isDrawing, activeTool, setActiveTool} = useStageContext();
+  const undo = useAppStore((s) => s.undo);
+  const redo = useAppStore((s) => s.redo);
+  const canUndo = useAppStore((s) => s.past.length > 0);
+  const canRedo = useAppStore((s) => s.future.length > 0);
+  const isDrawing = useAppStore((s) => s.isDrawing);
+  const activeTool = useAppStore((s) => s.activeTool);
+  const setActiveTool = useAppStore((s) => s.setActiveTool);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
