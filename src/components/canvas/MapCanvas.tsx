@@ -230,12 +230,16 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
 
   /* ------------------------------- DRAG EVENTS ------------------------------ */
 
-  const handleDragStart = () => {
+  const handleDragStart = (e: KonvaEventObject<globalThis.DragEvent>) => {
+    // Only handle stage dragging, not element dragging
+    if (e.target !== stageRef.current) return;
     if (isDrawing || activeTool !== "none") return;
     setIsDragging(true);
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: KonvaEventObject<globalThis.DragEvent>) => {
+    // Only handle stage dragging, not element dragging
+    if (e.target !== stageRef.current) return;
     if (isDrawing || activeTool !== "none") return;
 
     const stage = stageRef.current;
@@ -247,7 +251,9 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     setIsDragging(false);
   };
 
-  const handleDragMove = () => {
+  const handleDragMove = (e: KonvaEventObject<globalThis.DragEvent>) => {
+    // Only handle stage dragging, not element dragging
+    if (e.target !== stageRef.current) return;
     if (isDrawing || activeTool !== "none") return;
 
     const stage = stageRef.current;
@@ -256,6 +262,10 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
       x: stage.x(),
       y: stage.y(),
     });
+  };
+
+  const handleElementDragEnd = (id: string, x: number, y: number) => {
+    updateElement(id, { x, y });
   };
 
   /* ------------------------------ MOUSE EVENTS ------------------------------ */
@@ -780,6 +790,7 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
             <ElementRenderer
               key={element.id}
               element={element}
+              onDragEnd={handleElementDragEnd}
             />
           ))}
           {/* Selection UI - Renders on Top */}
