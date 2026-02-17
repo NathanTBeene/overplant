@@ -11,6 +11,11 @@ import { stageRef } from "@/stores/stageRef";
 import { useDrawingHandlers } from "@/hooks/useDrawingHandlers";
 import { useStageInteraction } from "@/hooks/useStageInteraction";
 import { useHeroDrop } from "@/hooks/useHeroDrop";
+import { Settings, ArrowDownToLine, FileUp, Divide } from "lucide-react";
+import SettingsModal from "../base/SettingsModal";
+import { useMapImportExportDialog, useModalDialog } from "@/providers/AppProvider";
+import Tooltip from '../ui/Tooltip';
+import useFileDialog from "@/hooks/useFileDialog";
 
 interface MapCanvasProps {
   map: Map;
@@ -34,6 +39,9 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   const { handleMouseDown, handleMouseMove, handleMouseUp } = useDrawingHandlers();
   const { handleWheel, handleDragStart, handleDragMove, handleDragEnd, isDragging } = useStageInteraction();
   const { handleDragOver, handleDrop } = useHeroDrop();
+
+  const showModal = useModalDialog();
+  const { exportMap, importMap } = useMapImportExportDialog();
 
   // Delete selected element on Delete / Backspace
   useEffect(() => {
@@ -73,6 +81,14 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
     updateElement(id, { x, y });
   };
 
+  const handleImportMap = async () => {
+    importMap();
+  }
+
+  const handleExportMap = () => {
+    exportMap(map.name);
+  }
+
   return (
     <div
       ref={containerRef}
@@ -80,6 +96,68 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
+      {/* Top Buttons */}
+      <div className="absolute top-2 right-2 z-30 flex flex-col items-center gap-2">
+        {/* Settings */}
+        <Tooltip
+          content={(
+            <div>Settings</div>
+          )}
+          properties={{
+            side: "left",
+            delay: 200,
+          }}
+        >
+          <button
+            className="p-2 bg-fill hover:bg-fill-hover hover:cursor-pointer rounded-md transition-all duration-200 flex items-center gap-3 group"
+            onClick={() => showModal({
+              content: <SettingsModal/>,
+              showBackdrop: true,
+              showCloseButton: true,
+            })}
+          >
+            <Settings size={26} className="text-text"/>
+          </button>
+        </Tooltip>
+
+        {/* Import */}
+
+        <Tooltip
+          content={(
+            <div>Import from <span className="bg-fill-hover py-0.5 px-2 ml-1 rounded-md text-accent-active">*.map</span></div>
+          )}
+          properties={{
+            side: "left",
+            delay: 200,
+          }}
+        >
+          <button
+            className="p-2 bg-fill hover:bg-fill-hover hover:cursor-pointer rounded-md transition-all duration-200 flex items-center gap-3 group"
+            onClick={handleImportMap}
+          >
+            <FileUp size={26} className="text-text"/>
+          </button>
+        </Tooltip>
+
+        {/* Export */}
+        <Tooltip
+          content={(
+            <div>Export to <span className="bg-fill-hover py-0.5 px-2 ml-1 rounded-md text-accent-active">*.map</span></div>
+          )}
+          properties={{
+            side: "left",
+            delay: 200,
+          }}
+        >
+          <button
+            className="p-2 bg-fill hover:bg-fill-hover hover:cursor-pointer rounded-md transition-all duration-200 flex items-center gap-3 group"
+            onClick={handleExportMap}
+          >
+            <ArrowDownToLine size={26} className="text-text"/>
+          </button>
+        </Tooltip>
+      </div>
+
       <DebugOverlay />
 
       {elements.filter((el) => el.type === "text").map((element) => (

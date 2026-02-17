@@ -13,6 +13,7 @@ const ElementRenderer = ({ element, onDragEnd }: ElementRendererProps) => {
     const activeTool = useAppStore((s) => s.activeTool);
     const updateElement = useAppStore((s) => s.updateElement);
 
+
     const isToolActive = activeTool !== "none";
 
     const [image] = useImage(element.type === "image" ? element.src ?? "" : "");

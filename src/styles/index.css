@@ -37,3 +37,40 @@
   font-family: 'Roboto', sans-serif;
   letter-spacing: 0.6px;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.TooltipContent[data-state="delayed-open"],
+.TooltipContent[data-state="instant-open"] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.TooltipContent[data-state="closed"] {
+  animation: fadeOut 0.2s ease-out;
+}
+
+.DialogOverlay[data-state="open"],
+.DialogContent[data-state="open"] {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.DialogOverlay[data-state="closed"],
+.DialogContent[data-state="closed"] {
+  animation: fadeOut 0.15s ease-out;
+}

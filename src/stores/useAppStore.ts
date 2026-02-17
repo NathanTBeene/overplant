@@ -74,7 +74,20 @@ const makeToolSettings = (): ToolSettings => ({
 
 const MAX_HISTORY_SIZE = 50;
 
+interface AppSettings {
+  debugOverlay: boolean;
+}
+
+const defaultSettings: AppSettings = {
+  debugOverlay: false,
+};
+
 export interface AppState {
+
+  // App Settings
+  settings: AppSettings;
+  setSettings: (settings: AppSettings) => void;
+
   // Stage Transform
   stageScale: number;
   stagePosition: { x: number; y: number };
@@ -93,6 +106,7 @@ export interface AppState {
   updateElement: (id: string, updates: Partial<MapElement>) => void;
   removeElement: (id: string) => void;
   clearElements: () => void;
+  setElements: (elements: MapElement[]) => void;
   addHero: (info: HeroInfo) => void;
 
   // Drawing
@@ -116,10 +130,16 @@ export interface AppState {
 
   // Map
   mapSide: "Attack" | "Defense";
+  mapName: string;
   toggleMapSide: () => void;
+  setMapName: (name: string) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
+  // App Settings
+  settings: defaultSettings,
+  setSettings: (settings) => set({ settings }),
+
   // Stage Transform
   stageScale: 1,
   stagePosition: { x: 0, y: 0 },
@@ -182,6 +202,8 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
     set({ elements: [] });
   },
+
+  setElements: (elements) => set({ elements }),
 
   addHero: (info) => {
     const stage = stageRef.current;
@@ -284,6 +306,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   // Map
   mapSide: "Attack",
+  mapName: "Untitled Map",
   toggleMapSide: () => {
     set((s) => {
       const newSide = s.mapSide === "Attack" ? "Defense" : "Attack";
@@ -313,5 +336,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         past
       }
     });
-  }
+  },
+
+  setMapName: (name) => set({ mapName: name })
 }));
