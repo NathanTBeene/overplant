@@ -1,6 +1,6 @@
 export interface MapElement {
   id: string;
-  type: "line" | "arrow" | "rectangle" | "circle" | "text" | "image";
+  type: "line" | "arrow" | "rectangle" | "circle" | "text" | "image" | "hero";
   draggable?: boolean;
   // Lines and Arrows
   points?: number[];
