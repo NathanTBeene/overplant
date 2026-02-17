@@ -7,6 +7,9 @@ const DebugOverlay = () => {
   const isDrawing = useAppStore((s) => s.isDrawing);
   const activeTool = useAppStore((s) => s.activeTool);
   const toolSettings = useAppStore((s) => s.toolSettings);
+  const settings = useAppStore((s) => s.settings);
+
+  if (!settings.debugOverlay) return null;
 
   return (
     <div className="absolute top-4 left-4 px-4 py-2 z-10 rounded-md bg-fill-dark">
