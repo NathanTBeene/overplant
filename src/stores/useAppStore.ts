@@ -5,6 +5,7 @@ import { getInitialMapSettings, type Map } from "@/lib/mapInfo";
 import {create} from "zustand";
 import { stageRef } from "./stageRef";
 import type { MapElement } from "@/types/MapElement";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 /* ------------------------------ TOOL SETTINGS ----------------------------- */
 
@@ -78,9 +79,17 @@ interface AppSettings {
   debugOverlay: boolean;
 }
 
-const defaultSettings: AppSettings = {
-  debugOverlay: false,
-};
+const getDefaultSettings = (): AppSettings => {
+  try {
+    const stored = localStorage.getItem("appSettings");
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.log("Failed to load settings from localStorage, using defaults.", e);
+  }
+  return { debugOverlay: false };
+}
 
 export interface AppState {
 
@@ -137,8 +146,12 @@ export interface AppState {
 
 export const useAppStore = create<AppState>((set, get) => ({
   // App Settings
-  settings: defaultSettings,
-  setSettings: (settings) => set({ settings }),
+  settings: getDefaultSettings(),
+  setSettings: (settings) => {
+    set({ settings });
+    // Persist to localStorage
+    localStorage.setItem("appSettings", JSON.stringify(settings));
+  },
 
   // Stage Transform
   stageScale: 1,
