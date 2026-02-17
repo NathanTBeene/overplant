@@ -11,11 +11,10 @@ import { stageRef } from "@/stores/stageRef";
 import { useDrawingHandlers } from "@/hooks/useDrawingHandlers";
 import { useStageInteraction } from "@/hooks/useStageInteraction";
 import { useHeroDrop } from "@/hooks/useHeroDrop";
-import { Settings, ArrowDownToLine, FileUp, Divide } from "lucide-react";
+import { Settings, ArrowDownToLine, FileUp } from "lucide-react";
 import SettingsModal from "../base/SettingsModal";
 import { useMapImportExportDialog, useModalDialog } from "@/providers/AppProvider";
 import Tooltip from '../ui/Tooltip';
-import useFileDialog from "@/hooks/useFileDialog";
 
 interface MapCanvasProps {
   map: Map;

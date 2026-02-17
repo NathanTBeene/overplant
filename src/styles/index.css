@@ -74,3 +74,13 @@
 .DialogContent[data-state="closed"] {
   animation: fadeOut 0.15s ease-out;
 }
+
+.AlertOverlay[data-state="open"],
+.AlertContent[data-state="open"] {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.AlertOverlay[data-state="closed"],
+.AlertContent[data-state="closed"] {
+  animation: fadeOut 0.15s ease-out;
+}

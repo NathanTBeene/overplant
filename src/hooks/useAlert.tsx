@@ -18,7 +18,7 @@ interface AlertDialogState {
   title: string;
   description: string;
   type: AlertType;
-  resolve: ((value: any) => void) | null;
+  resolve: ((value: AlertResponse<AlertType>) => void) | null;
 }
 
 interface AlertOptions {
@@ -46,7 +46,7 @@ export const useAlert = () => {
           title: options.title,
           description: options.description,
           type: options.type || "yes-no-cancel",
-          resolve,
+          resolve: (response: string) => resolve(response as AlertResponse<T>),
         });
       });
     },
@@ -56,11 +56,11 @@ export const useAlert = () => {
   const handleResponse = useCallback(
     (response: string) => {
       if (dialogState.resolve) {
-        dialogState.resolve(response);
+        dialogState.resolve(response as AlertResponse<AlertType>);
       }
       setDialogState((prev) => ({ ...prev, isOpen: false }));
     },
-    [dialogState.resolve]
+    [dialogState]
   );
 
   const buttonBase = ({
@@ -174,7 +174,7 @@ export const useAlert = () => {
     >
       <AlertDialog.Portal>
         <AlertDialog.Overlay
-          className="bg-[rgba(0,0,0,0.5)] fixed inset-0 z-50"
+          className="bg-[rgba(0,0,0,0.5)] fixed inset-0 z-50 AlertOverlay"
           onClick={handleClickOutside}
         />
         <AlertDialog.Content className="bg-background-secondary rounded-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 z-51 min-w-120 shadow-lg text-text">
