@@ -13,4 +13,5 @@ export default defineConfig({
       "@/components": "/src/components",
     },
   },
+  base: '/overplant/',
 })

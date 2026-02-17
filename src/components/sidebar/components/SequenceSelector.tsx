@@ -24,22 +24,22 @@ const SequenceSelector = () => {
   );
 };
 
-const SequenceButton = ({
-  number,
-  selected = false,
-}: {
-  number: number;
-  selected?: boolean;
-}) => {
-  return (
-    <button
-      className={`hover:bg-slate-500 transition-colors rounded-sm h-10 flex items-center justify-center text-2xl cursor-pointer ${
-        selected ? "bg-overwatch-orange" : ""
-      }`}
-    >
-      {number}
-    </button>
-  );
-};
+// const SequenceButton = ({
+//   number,
+//   selected = false,
+// }: {
+//   number: number;
+//   selected?: boolean;
+// }) => {
+//   return (
+//     <button
+//       className={`hover:bg-slate-500 transition-colors rounded-sm h-10 flex items-center justify-center text-2xl cursor-pointer ${
+//         selected ? "bg-overwatch-orange" : ""
+//       }`}
+//     >
+//       {number}
+//     </button>
+//   );
+// };
 
 export default SequenceSelector;

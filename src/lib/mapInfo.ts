@@ -22,8 +22,8 @@ export const mapsInfo: Map[] = [
   {
     id: "blizzardworld",
     name: "Blizzard World",
-    mapImage: "/src/assets/maps/blizzardworld/map.png",
-    headerImage: "/src/assets/maps/blizzardworld/header.webp",
+    mapImage: "./assets/maps/blizzardworld/map.png",
+    headerImage: "./assets/maps/blizzardworld/header.webp",
     initialSettings: {
       attack: {
         scale: 0.4,
@@ -39,8 +39,8 @@ export const mapsInfo: Map[] = [
   {
     id: "busan",
     name: "Busan",
-    mapImage: "/src/assets/maps/busan/map.png",
-    headerImage: "/src/assets/maps/busan/header.webp",
+    mapImage: "./assets/maps/busan/map.png",
+    headerImage: "./assets/maps/busan/header.webp",
     initialSettings: {
       attack: {
         scale: 0.4,
@@ -56,8 +56,8 @@ export const mapsInfo: Map[] = [
   {
     id: "eichenwalde",
     name: "Eichenwalde",
-    mapImage: "/src/assets/maps/eichenwalde/map.png",
-    headerImage: "/src/assets/maps/eichenwalde/header.webp",
+    mapImage: "./assets/maps/eichenwalde/map.png",
+    headerImage: "./assets/maps/eichenwalde/header.webp",
     initialSettings: {
       attack: {
         scale: 0.6,
@@ -73,8 +73,8 @@ export const mapsInfo: Map[] = [
   {
     id: "hanamura",
     name: "Hanamura",
-    mapImage: "/src/assets/maps/hanamura/map.png",
-    headerImage: "/src/assets/maps/hanamura/header.webp",
+    mapImage: "./assets/maps/hanamura/map.png",
+    headerImage: "./assets/maps/hanamura/header.webp",
     initialSettings: {
       attack: {
         scale: 0.4,
@@ -90,8 +90,8 @@ export const mapsInfo: Map[] = [
   {
     id: "havana",
     name: "Havana",
-    mapImage: "/src/assets/maps/havana/map.png",
-    headerImage: "/src/assets/maps/havana/header.webp",
+    mapImage: "./assets/maps/havana/map.png",
+    headerImage: "./assets/maps/havana/header.webp",
     initialSettings: {
       attack: {
         scale: 0.7,
@@ -107,8 +107,8 @@ export const mapsInfo: Map[] = [
   {
     id: "hollywood",
     name: "Hollywood",
-    mapImage: "/src/assets/maps/hollywood/map.png",
-    headerImage: "/src/assets/maps/hollywood/header.webp",
+    mapImage: "./assets/maps/hollywood/map.png",
+    headerImage: "./assets/maps/hollywood/header.webp",
     initialSettings: {
       attack: {
         scale: 0.6,
@@ -124,8 +124,8 @@ export const mapsInfo: Map[] = [
   {
     id: "ilios",
     name: "Ilios",
-    mapImage: "/src/assets/maps/ilios/map.png",
-    headerImage: "/src/assets/maps/ilios/header.webp",
+    mapImage: "./assets/maps/ilios/map.png",
+    headerImage: "./assets/maps/ilios/header.webp",
     initialSettings: {
       attack: {
         scale: 0.5,
@@ -141,8 +141,8 @@ export const mapsInfo: Map[] = [
   {
     id: "kingsrow",
     name: "King's Row",
-    mapImage: "/src/assets/maps/kingsrow/map.png",
-    headerImage: "/src/assets/maps/kingsrow/header.png",
+    mapImage: "./assets/maps/kingsrow/map.png",
+    headerImage: "./assets/maps/kingsrow/header.png",
     initialSettings: {
       attack: {
         scale: 0.5,

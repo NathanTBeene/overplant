@@ -4,20 +4,20 @@ import HeroPortrait from "@/components/heroBar/components/HeroPortrait";
 import DamageIcon from "@/assets/icons/damage_icon.svg?react";
 import TankIcon from "@/assets/icons/tank_icon.svg?react";
 import SupportIcon from "@/assets/icons/support_icon.svg?react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import HeroBarSwitch from "./components/HeroBarSwitch";
 import Carousel from "../base/Carousel";
 
 const HeroBar = () => {
   const [isAlly, setIsAlly] = useState(true);
-  const viewportRef = useRef<HTMLDivElement>(null);
+  // const viewportRef = useRef<HTMLDivElement>(null);
 
-  const handleWheel = (event: React.WheelEvent) => {
-    if (viewportRef.current) {
-      event.preventDefault();
-      viewportRef.current.scrollLeft += event.deltaY;
-    }
-  };
+  // const handleWheel = (event: React.WheelEvent) => {
+  //   if (viewportRef.current) {
+  //     event.preventDefault();
+  //     viewportRef.current.scrollLeft += event.deltaY;
+  //   }
+  // };
 
   return (
     <div className="w-full h-full flex items-center">

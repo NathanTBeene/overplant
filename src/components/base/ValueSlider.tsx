@@ -1,5 +1,5 @@
 import { Slider, Tooltip } from "radix-ui";
-import { useState, type FC } from 'react';
+import { useState} from 'react';
 
 interface ValueSliderProps {
   onValueChange: (value: number[]) => void;
