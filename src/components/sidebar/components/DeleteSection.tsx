@@ -10,6 +10,9 @@ const DeleteSection = () => {
   // const [currentSequence, setCurrentSequence] = useState<number>(1);
 
   const { elements, removeElement, clearElements } = useAppStore.getState();
+  const activeSequenceIndex = useAppStore((s) => s.activeSequenceIndex);
+  const clearSequence = useAppStore((s) => s.clearSequence);
+
 
   const onDeleteEverything = async () => {
     const response = await showAlert({
@@ -25,12 +28,17 @@ const DeleteSection = () => {
   };
 
   const onDeleteSequenceStep = async () => {
-    await showAlert({
-      title: `Not Implemented Yet`,
-      description: `Sequence Steps are yet to be implemented. Coming soon.`,
-      type: "ok",
+    const response = await showAlert({
+      title: `Clear Sequence ${activeSequenceIndex + 1}?`,
+      description: `Are you sure you want to clear all elements in Sequence ${activeSequenceIndex + 1}? This cannot be undone.`,
+      type: "yes-no-cancel",
+      required: true,
     });
+
+    if (response !== "yes") return;
+    clearSequence(activeSequenceIndex);
   };
+
 
   const onDeleteElementType = async (type: string) => {
     const response = await showAlert({
@@ -79,7 +87,7 @@ const DeleteSection = () => {
         className="h-12 bg-accent! hover:bg-cancel!"
         onClick={onDeleteEverything}
       />
-      <DeleteButton text={`Sequence Step 1`} onClick={onDeleteSequenceStep} />
+      <DeleteButton text={`Sequence ${activeSequenceIndex + 1}`} onClick={onDeleteSequenceStep} />
       <div className="flex gap-2 ">
         <DeleteButton
           icon={<User />}
