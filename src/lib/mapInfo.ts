@@ -27,11 +27,11 @@ export const mapsInfo: Map[] = [
     initialSettings: {
       attack: {
         scale: 0.4,
-        position: { x: -200, y: -380 },
+        position: { x: 0, y: -1060 },
       },
       defense: {
         scale: 0.4,
-        position: { x: -2200, y: -380 },
+        position: { x: -870, y: -500 },
       },
     },
     type: "hybrid",
@@ -43,12 +43,12 @@ export const mapsInfo: Map[] = [
     headerImage: "./assets/maps/busan/header.webp",
     initialSettings: {
       attack: {
-        scale: 0.4,
-        position: { x: -150, y: -530 },
+        scale: 0.2,
+        position: { x: -297, y: -55 },
       },
       defense: {
-        scale: 0.4,
-        position: { x: -150, y: -530 },
+        scale: 0.2,
+        position: { x: -297, y: -55 },
       },
     },
     type: "control",
@@ -61,11 +61,11 @@ export const mapsInfo: Map[] = [
     initialSettings: {
       attack: {
         scale: 0.6,
-        position: { x: -770, y: -1700 },
+        position: { x: -1470, y: -1680 },
       },
       defense: {
-        scale: 0.6,
-        position: { x: -770, y: -1700 },
+        scale: 0.5,
+        position: { x: -431, y: -155 },
       },
     },
     type: "hybrid",
@@ -78,11 +78,11 @@ export const mapsInfo: Map[] = [
     initialSettings: {
       attack: {
         scale: 0.4,
-        position: { x: -160, y: -520 },
+        position: { x: -25, y: -905 },
       },
       defense: {
         scale: 0.4,
-        position: { x: -160, y: -520 },
+        position: { x: -690, y: -100 },
       },
     },
     type: "assault",
@@ -112,11 +112,11 @@ export const mapsInfo: Map[] = [
     initialSettings: {
       attack: {
         scale: 0.6,
-        position: { x: -280, y: -1400 },
+        position: { x: -45, y: -1680 },
       },
       defense: {
         scale: 0.6,
-        position: { x: -280, y: -1400 },
+        position: { x: -1090, y: -740 },
       },
     },
     type: "hybrid",
@@ -128,15 +128,32 @@ export const mapsInfo: Map[] = [
     headerImage: "./assets/maps/ilios/header.webp",
     initialSettings: {
       attack: {
-        scale: 0.5,
-        position: { x: -580, y: -720 },
+        scale: 0.2,
+        position: { x: -425, y: -65 },
       },
       defense: {
-        scale: 0.5,
-        position: { x: -580, y: -720 },
+        scale: 0.2,
+        position: { x: -250, y: -35 },
       },
     },
     type: "control",
+  },
+  {
+    id: "junkertown",
+    name: "Junkertown",
+    mapImage: "./assets/maps/junkertown/map.png",
+    headerImage: "./assets/maps/junkertown/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.4,
+        position: { x: -10, y: -1050 },
+      },
+      defense: {
+        scale: 0.4,
+        position: { x: -892, y: -473 },
+      },
+    },
+    type: "escort",
   },
   {
     id: "kingsrow",
@@ -155,6 +172,108 @@ export const mapsInfo: Map[] = [
     },
     type: "hybrid",
   },
+  {
+    id: "lijiangtower",
+    name: "Lijiang Tower",
+    mapImage: "./assets/maps/lijiangtower/map.png",
+    headerImage: "./assets/maps/lijiangtower/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.2,
+        position: { x: -180, y: -50 },
+      },
+      defense: {
+        scale: 0.2,
+        position: { x: -480, y: -80 },
+      },
+    },
+    type: "control",
+  },
+  {
+    id: "nepal",
+    name: "Nepal",
+    mapImage: "./assets/maps/nepal/map.png",
+    headerImage: "./assets/maps/nepal/header.png",
+    initialSettings: {
+      attack: {
+        scale: 0.2,
+        position: { x: -230, y: -70 },
+      },
+      defense: {
+        scale: 0.2,
+        position: { x: 149, y: -303 },
+      },
+    },
+    type: "control",
+  },
+  {
+    id: "numbani",
+    name: "Numbani",
+    mapImage: "./assets/maps/numbani/map.png",
+    headerImage: "./assets/maps/numbani/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.5,
+        position: { x: -1230, y: -1350 },
+      },
+      defense: {
+        scale: 0.5,
+        position: { x: 149, y: -303 },
+      },
+    },
+    type: "hybrid",
+  },
+  {
+    id: "rialto",
+    name: "Rialto",
+    mapImage: "./assets/maps/rialto/map.png",
+    headerImage: "./assets/maps/rialto/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.5,
+        position: { x: -1230, y: -1350 },
+      },
+      defense: {
+        scale: 0.5,
+        position: { x: 149, y: -303 },
+      },
+    },
+    type: "escort",
+  },
+  {
+    id: "route66",
+    name: "Route 66",
+    mapImage: "./assets/maps/route66/map.png",
+    headerImage: "./assets/maps/route66/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.5,
+        position: { x: -1230, y: -1350 },
+      },
+      defense: {
+        scale: 0.5,
+        position: { x: 149, y: -303 },
+      },
+    },
+    type: "escort",
+  },
+  {
+    id: "watchpointgibraltar",
+    name: "Watchpoint: Gibraltar",
+    mapImage: "./assets/maps/watchpointgibraltar/map.png",
+    headerImage: "./assets/maps/watchpointgibraltar/header.webp",
+    initialSettings: {
+      attack: {
+        scale: 0.5,
+        position: { x: -1230, y: -1350 },
+      },
+      defense: {
+        scale: 0.5,
+        position: { x: 149, y: -303 },
+      },
+    },
+    type: "assault",
+  }
 ];
 
 export const getInitialMapSettings = (mapId: string, side: "Attack" | "Defense") => {

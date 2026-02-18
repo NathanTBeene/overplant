@@ -33,6 +33,10 @@
   }
 }
 
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 :root {
   font-family: 'Roboto', sans-serif;
   letter-spacing: 0.6px;

@@ -78,8 +78,8 @@ const RoleCarousel = ({ role, isAlly }: RoleCarouselProps) => {
       </div>
 
       {/* Heroes Carousel */}
-      <div className="w-full">
-        <Carousel itemsPerView={4.5} className="w-full">
+      <div className={`w-full border-3 bg-background-secondary shadow-lg rounded-lg overflow-hidden ${isAlly ? "border-overwatch-ally/20" : "border-overwatch-enemy/20"}`}>
+        <Carousel itemsPerView={3} className="w-full">
           {heroElements}
         </Carousel>
       </div>
