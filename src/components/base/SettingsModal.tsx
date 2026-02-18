@@ -36,9 +36,11 @@ const SettingsOption = ({ name, description, value, onChange }: SettingsOptionPr
 const TABS = ["General", "Sequence"] as const;
 type Tab = (typeof TABS)[number];
 
-const EASING_OPTIONS: { label: string; value: "linear" | "ease-in-out" | "spring" }[] = [
+const EASING_OPTIONS: { label: string; value: "linear" | "ease-in-out" | "spring" | "ease-in" | "ease-out" }[] = [
   { label: "Linear", value: "linear" },
-  { label: "Ease", value: "ease-in-out" },
+  { label: "Ease In", value: "ease-in" },
+  { label: "Ease Out", value: "ease-out" },
+  { label: "Ease In-Out", value: "ease-in-out" },
   { label: "Spring", value: "spring" },
 ];
 
