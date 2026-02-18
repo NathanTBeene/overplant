@@ -13,3 +13,7 @@ export const selectIsDrawing = (s: AppState) => s.isDrawing;
 export const selectMapSide = (s: AppState) => s.mapSide;
 export const selectCanUndo = (s: AppState) => s.past.length > 0;
 export const selectCanRedo = (s: AppState) => s.future.length > 0;
+export const selectSequences = (s: AppState) => s.sequences;
+export const selectActiveSequenceIndex = (s: AppState) => s.activeSequenceIndex;
+export const selectIsPlaying = (s: AppState) => s.isPlaying;
+export const selectIsAnimating = (s: AppState) => s.isAnimating;

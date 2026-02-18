@@ -5,6 +5,7 @@ import { getInitialMapSettings, type Map } from "@/lib/mapInfo";
 import {create} from "zustand";
 import { stageRef } from "./stageRef";
 import type { MapElement } from "@/types/MapElement";
+import type { Sequence } from "@/types/Sequence";
 
 /* ------------------------------ TOOL SETTINGS ----------------------------- */
 
@@ -77,6 +78,9 @@ const MAX_HISTORY_SIZE = 50;
 interface AppSettings {
   debugOverlay: boolean;
   showHeroTransformers: boolean;
+  sequenceEasing: "linear" | "ease-in" | "ease-out" | "ease-in-out" | "spring";
+  sequenceTransitionDuration: number; // in milliseconds
+  sequenceHoldTime: number; // in milliseconds
 }
 
 const getDefaultSettings = (): AppSettings => {
@@ -85,7 +89,7 @@ const getDefaultSettings = (): AppSettings => {
     // Validate stored settings and that it matches the AppSettings structure
     if (stored) {
       const parsed = JSON.parse(stored);
-      if (typeof parsed === "object" && parsed !== null && "debugOverlay" in parsed && "showHeroTransformers" in parsed) {
+      if (typeof parsed === "object" && parsed !== null && "debugOverlay" in parsed && "showHeroTransformers" in parsed && "sequenceEasing" in parsed && "sequenceTransitionDuration" in parsed && "sequenceHoldTime" in parsed) {
         return parsed;
       }
     }
@@ -95,6 +99,9 @@ const getDefaultSettings = (): AppSettings => {
   return {
     debugOverlay: false,
     showHeroTransformers: false,
+    sequenceEasing: "linear",
+    sequenceTransitionDuration: 600,
+    sequenceHoldTime: 2000,
   };
 }
 
@@ -124,6 +131,19 @@ export interface AppState {
   clearElements: () => void;
   setElements: (elements: MapElement[]) => void;
   addHero: (info: HeroInfo) => void;
+
+  // Sequences
+  sequences: Sequence[];
+  activeSequenceIndex: number;
+  isAnimating: boolean;
+  isPlaying: boolean;
+  saveCurrentToSequence: () => void;
+  setSequences: (sequences: Sequence[]) => void;
+  updateSequenceThumbnail: (index: number, thumbnail: string) => void;
+  clearSequence: (index: number) => void;
+  setActiveSequenceIndex: (index: number) => void;
+  setIsAnimating: (animating: boolean) => void;
+  setIsPlaying: (playing: boolean) => void;
 
   // Drawing
   isDrawing: boolean;
@@ -198,6 +218,48 @@ export const useAppStore = create<AppState>((set, get) => ({
       });
     }
   },
+
+  // Sequences
+  sequences: Array.from({ length: 10}, () => ({ thumbnail: "", elements: [] } as Sequence)),
+  activeSequenceIndex: 0,
+  isAnimating: false,
+  isPlaying: false,
+
+  saveCurrentToSequence: () => {
+    const { elements, sequences, activeSequenceIndex } = get();
+    const updated = [...sequences];
+    updated[activeSequenceIndex] = {
+      ...updated[activeSequenceIndex],
+      elements: elements.map(el => ({ ...el })), // Deep copy to avoid reference issues
+    };
+    set({ sequences: updated });
+  },
+
+  setSequences: (sequences) => {
+    const firstElements = sequences[0]?.elements || [];
+    set({ sequences, elements: firstElements, activeSequenceIndex: 0 });
+  },
+
+  updateSequenceThumbnail: (index, thumbnail) => {
+    const updated = [...get().sequences];
+    updated[index] = { ...updated[index], thumbnail };
+    set({ sequences: updated });
+  },
+
+  clearSequence: (index) => {
+    const updated = [...get().sequences];
+    updated[index] = { thumbnail: "", elements: [] };
+    set({ sequences: updated });
+  },
+
+  setActiveSequenceIndex: (index) => {
+    const { sequences } = get();
+    if (index < 0 || index >= sequences.length) return;
+    set({ activeSequenceIndex: index, elements: sequences[index].elements });
+  },
+
+  setIsAnimating: (animating) => set({ isAnimating: animating }),
+  setIsPlaying: (playing) => set({ isPlaying: playing }),
 
   updateElement: (id, updates) => {
     set((s) => ({

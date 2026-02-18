@@ -1,5 +1,7 @@
 import { useAppStore } from "@/stores/useAppStore";
 import { useEffect } from "react";
+import { useSequencePlayback } from "./useSequencePlayback";
+import { useSequenceAnimation } from "./useSequenceAnimation";
 
 // Keyboard Shortcuts
 // - Undo: Ctrl+Z / Cmd+Z
@@ -27,9 +29,39 @@ const useKeyboardShortcuts = () => {
   const selectedElementId = useAppStore((s) => s.selectedElementId);
   const setSelectedElementId = useAppStore((s) => s.setSelectedElementId);
 
+  const { switchSequence } = useSequenceAnimation();
+  const { play: startPlayback, stop: stopPlayback } = useSequencePlayback();
+
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isDrawing) return; // Ignore shortcuts while drawing
+
+      // Sequence navigation
+      if (e.key === "[") {
+        const { activeSequenceIndex, isAnimating, isPlaying } = useAppStore.getState();
+        if (!isAnimating && !isPlaying && activeSequenceIndex > 0) {
+          switchSequence(activeSequenceIndex - 1);
+        }
+        return;
+      }
+      if (e.key === "]") {
+        const { activeSequenceIndex, isAnimating, isPlaying } = useAppStore.getState();
+        if (!isAnimating && !isPlaying && activeSequenceIndex < 9) {
+          switchSequence(activeSequenceIndex + 1);
+        }
+        return;
+      }
+      if (e.key === " ") {
+        e.preventDefault();
+        const { isAnimating, isPlaying } = useAppStore.getState();
+        if (!isAnimating) {
+          if (isPlaying) stopPlayback();
+          else startPlayback();
+        }
+        return;
+      }
+
 
       // Dont trigger if typing in an input or textarea
       const target = e.target as HTMLElement;
@@ -99,7 +131,7 @@ const useKeyboardShortcuts = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [undo, redo, canUndo, canRedo, isDrawing, activeTool, setActiveTool, selectedElementId, setSelectedElementId]);
+  }, [undo, redo, canUndo, canRedo, isDrawing, activeTool, setActiveTool, selectedElementId, setSelectedElementId, switchSequence, stopPlayback, startPlayback]);
 }
 
 export default useKeyboardShortcuts;

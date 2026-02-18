@@ -1,26 +1,46 @@
-import { useAppStore } from "@/stores/useAppStore"
+import { useAppStore } from "@/stores/useAppStore";
 import { useUIStore } from "@/stores/useUIStore";
 import useFileDialog from "./useFileDialog";
 import { useCallback } from "react";
 import { encryptData, decryptData } from "@/utils/crypt";
+import type { Sequence } from "@/types/Sequence";
+import type { MapElement } from "@/types/MapElement";
 
-interface ExportData {
-  elements: ReturnType<typeof useAppStore.getState>["elements"];
+interface ExportDataV2 {
+  sequences: Sequence[];
   timestamp: string;
-  version: string;
+  version: "2.0";
 }
 
+interface ExportDataV1 {
+  elements: MapElement[];
+  timestamp: string;
+  version: "1.0";
+}
+
+type ExportData = ExportDataV2 | ExportDataV1;
+
+const makeEmptySequences = (): Sequence[] =>
+  Array.from({ length: 10 }, () => ({ elements: [], thumbnail: null }));
+
 const useMapImportExport = () => {
-  const  { openFileDialog } = useFileDialog();
-  const elements = useAppStore((state) => state.elements);
-  const setElements = useAppStore((state) => state.setElements);
+  const { openFileDialog } = useFileDialog();
   const showAlert = useUIStore((state) => state.showAlert);
 
   const exportMap = useCallback(async (mapName: string) => {
-    const exportData: ExportData = {
-      elements,
+    useAppStore.getState().saveCurrentToSequence();
+    const sequences = useAppStore.getState().sequences;
+
+    // Strip thumbnails from export (they're large and regenerate on hover)
+    const exportSequences: Sequence[] = sequences.map((s) => ({
+      elements: s.elements,
+      thumbnail: null,
+    }));
+
+    const exportData: ExportDataV2 = {
+      sequences: exportSequences,
       timestamp: new Date().toISOString(),
-      version: "1.0",
+      version: "2.0",
     };
 
     const json = JSON.stringify(exportData, null, 2);
@@ -31,11 +51,11 @@ const useMapImportExport = () => {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${mapName.toLowerCase().replace(/[^a-z0-9]/g, '-') || "map"}.map`;
+    link.download = `${mapName.toLowerCase().replace(/[^a-z0-9]/g, "-") || "map"}.map`;
     link.click();
 
     URL.revokeObjectURL(url);
-  }, [elements]);
+  }, []);
 
   const importMap = useCallback(async () => {
     try {
@@ -47,7 +67,7 @@ const useMapImportExport = () => {
         showAlert({
           title: "Invalid File",
           description: "Please select a valid .map file.",
-          type: "ok"
+          type: "ok",
         });
         return;
       }
@@ -56,23 +76,37 @@ const useMapImportExport = () => {
       const decoded = await decryptData(text, "overplant");
       const data: ExportData = JSON.parse(decoded);
 
-      setElements(data.elements);
+      if (data.version === "1.0") {
+        // Backwards compat: wrap v1 elements into sequence 0
+        const sequences = makeEmptySequences();
+        sequences[0] = { elements: (data as ExportDataV1).elements, thumbnail: null };
+        useAppStore.getState().setSequences(sequences);
+      } else {
+        // v2.0
+        const sequences = makeEmptySequences();
+        const imported = (data as ExportDataV2).sequences;
+        imported.forEach((seq, i) => {
+          if (i < 10) sequences[i] = { elements: seq.elements, thumbnail: null };
+        });
+        useAppStore.getState().setSequences(sequences);
+      }
+
       showAlert({
         title: "Map Imported",
         description: "Map imported successfully!",
-        type: "ok"
-      })
+        type: "ok",
+      });
     } catch (error) {
       console.error("Error importing map:", error);
       showAlert({
         title: "Import Failed",
         description: "Failed to import map. Please make sure the file is a valid .map file.",
-        type: "ok"
-      })
+        type: "ok",
+      });
     }
-  }, [openFileDialog, setElements, showAlert]);
+  }, [openFileDialog, showAlert]);
 
   return { exportMap, importMap };
-}
+};
 
-export default useMapImportExport
+export default useMapImportExport;
