@@ -1,4 +1,3 @@
-import { selectActiveTool } from "@/stores/selectors";
 import { stageRef } from "@/stores/stageRef";
 import { useAppStore } from "@/stores/useAppStore";
 import type { MapElement } from "@/types/MapElement";
