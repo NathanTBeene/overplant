@@ -21,6 +21,9 @@ const SelectionTransformer = ({
   const transformerRef = useRef<Konva.Transformer>(null);
 
   const penSettings = useAppStore((s) => s.toolSettings.pen);
+  const settings = useAppStore((s) => s.settings);
+  const pushToHistory = useAppStore((s) => s.pushToHistory);
+  const elements = useAppStore((s) => s.elements);
 
   useEffect(() => {
     if (!transformerRef.current || !stageRef?.current) return;
@@ -34,11 +37,12 @@ const SelectionTransformer = ({
     const isHero = selectedElement.id.startsWith("hero-");
     const isShape = ["rectangle", "circle", "image", "text"].includes(selectedElement.type);
 
-    if (isShape && !isHero) {
+    if ((isHero && settings.showHeroTransformers) || isShape) {
       // Find the node by ID using Konva's findOne
       const node = stageRef.current.findOne(`#${selectedElement.id}`);
       if (node) {
         transformerRef.current.nodes([node]);
+        transformerRef.current.forceUpdate(); // Ensure transformer updates to new node
       } else {
         transformerRef.current.nodes([]);
       }
@@ -47,13 +51,15 @@ const SelectionTransformer = ({
     }
 
     transformerRef.current.getLayer()?.batchDraw();
-  }, [selectedElement, stageRef]);
+  }, [selectedElement, settings.showHeroTransformers, stageRef]);
 
   if (!selectedElement) return null;
 
   const isLine = selectedElement.type === "line" || selectedElement.type === "arrow";
 
   const handleTransformEnd = (e: Konva.KonvaEventObject<Event>) => {
+    pushToHistory(elements);
+
     const node = e.target;
     if (!node) return;
 
@@ -63,7 +69,7 @@ const SelectionTransformer = ({
     node.scaleX(1);
     node.scaleY(1);
 
-    if (selectedElement.type === "rectangle" || selectedElement.type === "image") {
+    if (selectedElement.type === "rectangle" || selectedElement.type === "image" || selectedElement.type === "hero") {
       onTransformEnd(selectedElement.id, {
         x: node.x(),
         y: node.y(),

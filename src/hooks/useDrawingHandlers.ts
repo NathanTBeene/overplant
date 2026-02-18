@@ -1,3 +1,4 @@
+import { selectActiveTool } from "@/stores/selectors";
 import { stageRef } from "@/stores/stageRef";
 import { useAppStore } from "@/stores/useAppStore";
 import type { MapElement } from "@/types/MapElement";
@@ -214,7 +215,7 @@ export const useDrawingHandlers = () => {
       updateElement,
       setIsDrawing,
       endBatch,
-      // setActiveTool,
+      setActiveTool,
       setSelectedElementId,
     } = useAppStore.getState();
 
@@ -226,8 +227,8 @@ export const useDrawingHandlers = () => {
       setIsDrawing(false);
       endBatch();
       drawStartPos.current = null;
-      // setActiveTool("none"); // TODO: Need user feedback on whether to keep tool active after drawing or not
-      setSelectedElementId(null);
+      setActiveTool("none");
+      setSelectedElementId(lastElement?.id ?? null);
     }
 
     const stage = stageRef.current;

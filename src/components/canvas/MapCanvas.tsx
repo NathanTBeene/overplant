@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Stage, Layer } from "react-konva";
 import type { Map } from "@/lib/mapInfo";
 import MapImage from "./MapImage";
-import ElementRenderer from "./ElementRenderer";
+import ElementRenderer from './ElementRenderer';
 import SelectionTransformer from "../base/SelectionTransformer";
 import TextElement from "./TextElement";
 import DebugOverlay from "./DebugOverlay";
@@ -34,15 +34,14 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   const setSelectedElementId = useAppStore((s) => s.setSelectedElementId);
   const removeElement = useAppStore((s) => s.removeElement);
   const updateElement = useAppStore((s) => s.updateElement);
-  const isDrawing = useAppStore((s) => s.isDrawing);
   const activeTool = useAppStore((s) => s.activeTool);
-  const isDefense = useAppStore((s) => s.mapSide === "Defense");
-  const imageWidth = useAppStore((s) => s.mapImageSize.width);
-  const imageHeight = useAppStore((s) => s.mapImageSize.height);
+  const isDrawing = useAppStore((s) => s.isDrawing);
+  const { isDragging } = useStageInteraction();
+
 
   // Handlers
   const { handleMouseDown, handleMouseMove, handleMouseUp } = useDrawingHandlers();
-  const { handleWheel, handleDragStart, handleDragMove, handleDragEnd, isDragging } = useStageInteraction();
+  const { handleWheel, handleDragStart, handleDragMove, handleDragEnd } = useStageInteraction();
   const { handleDragOver, handleDrop } = useHeroDrop();
 
   // Dialogs
@@ -82,10 +81,6 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
   useEffect(() => {
     if (activeTool !== "none") setSelectedElementId(null);
   }, [activeTool, setSelectedElementId]);
-
-  const handleElementDragEnd = (id: string, x: number, y: number) => {
-    updateElement(id, { x, y });
-  };
 
   const handleImportMap = async () => {
     importMap();
@@ -193,35 +188,66 @@ const MapCanvas = ({ map }: MapCanvasProps) => {
         onDragEnd={handleDragEnd}
         onDragMove={handleDragMove}
       >
+        {/* Map Layer */}
         <Layer>
           <MapImage src={map.mapImage} />
         </Layer>
-        <Layer
+
+        <CanvasLayer elementType={["circle", "rectangle", "line", "arrow"]} />
+        <CanvasLayer elementType={["image"]} />
+        <CanvasLayer elementType={["hero"]} />
+        <CanvasLayer elementType={["text"]} />
+        <Layer>
+          {!isDrawing && !isDragging && (
+              <SelectionTransformer
+                selectedElement={elements.find((e) => e.id === selectedElementId) ?? null}
+                stageRef={stageRef}
+                onTransformEnd={updateElement}
+                stageScale={stageScale}
+              />
+            )}
+        </Layer>
+      </Stage>
+    </div>
+  );
+};
+
+interface CanvasLayerProps {
+  elementType: string[];
+}
+
+const CanvasLayer = ({
+  elementType,
+}: CanvasLayerProps) => {
+  const elements = useAppStore((s) => s.elements);
+  const updateElement = useAppStore((s) => s.updateElement);
+  const isDefense = useAppStore((s) => s.mapSide === "Defense");
+  const imageWidth = useAppStore((s) => s.mapImageSize.width);
+  const imageHeight = useAppStore((s) => s.mapImageSize.height);
+
+  const filteredElements = elements.filter((el) => elementType.includes(el.type));
+
+  const handleElementDragEnd = (id: string, x: number, y: number) => {
+    updateElement(id, { x, y });
+  };
+
+  return (
+    <Layer
           rotation={isDefense ? 180 : 0}
           offsetX={isDefense ? imageWidth/2 : 0}
           offsetY={isDefense ? imageHeight/2 : 0}
           x={isDefense ? imageWidth/2 : 0}
           y={isDefense ? imageHeight/2 : 0}
         >
-          {elements.filter((el) => el.type !== "text").map((element) => (
+          {filteredElements.map((element) => (
             <ElementRenderer
               key={element.id}
               element={element}
               onDragEnd={handleElementDragEnd}
             />
           ))}
-          {!isDrawing && !isDragging && (
-            <SelectionTransformer
-              selectedElement={elements.find((e) => e.id === selectedElementId) ?? null}
-              stageRef={stageRef}
-              onTransformEnd={updateElement}
-              stageScale={stageScale}
-            />
-          )}
         </Layer>
-      </Stage>
-    </div>
-  );
+  )
 };
 
 export default MapCanvas;

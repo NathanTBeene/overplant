@@ -12,7 +12,7 @@ import { useEffect } from "react";
 // - Circle Tool: C
 // - Line Tool: L
 // - Icons Tool: K
-// - Clear Tools: Esc
+// - Clear Tools / Deselect Items: Esc
 // - Delete Selected Element: Delete / Backspace (Handled in MapCanvas)
 
 
@@ -24,6 +24,8 @@ const useKeyboardShortcuts = () => {
   const isDrawing = useAppStore((s) => s.isDrawing);
   const activeTool = useAppStore((s) => s.activeTool);
   const setActiveTool = useAppStore((s) => s.setActiveTool);
+  const selectedElementId = useAppStore((s) => s.selectedElementId);
+  const setSelectedElementId = useAppStore((s) => s.setSelectedElementId);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -78,9 +80,15 @@ const useKeyboardShortcuts = () => {
         case 'k':
           setActiveTool(activeTool === "icons" ? "none" : "icons");
           break;
-        case 'escape':
-          setActiveTool("none");
+        case 'escape':{
+          if (activeTool !== "none") {
+            setActiveTool("none");
+          }
+          if (selectedElementId != null) {
+            setSelectedElementId(null);
+          }
           break;
+        }
         default:
           break;
       }
@@ -91,7 +99,7 @@ const useKeyboardShortcuts = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [undo, redo, canUndo, canRedo, isDrawing, activeTool, setActiveTool]);
+  }, [undo, redo, canUndo, canRedo, isDrawing, activeTool, setActiveTool, selectedElementId, setSelectedElementId]);
 }
 
 export default useKeyboardShortcuts;

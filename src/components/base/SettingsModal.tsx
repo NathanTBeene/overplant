@@ -55,6 +55,13 @@ const SettingsModal = () => {
         onChange={(value) => useAppStore.getState().setSettings({ ...settings, debugOverlay: value as boolean })}
       />
 
+      <SettingsOption
+        name="Hero Transformers"
+        description="Show transformers for hero elements. This allows you to move/resize heroes, but can get in the way when trying to select other elements close to heroes."
+        value={settings.showHeroTransformers}
+        onChange={(value) => useAppStore.getState().setSettings({ ...settings, showHeroTransformers: value as boolean })}
+      />
+
     </div>
   )
 }

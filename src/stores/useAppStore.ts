@@ -76,18 +76,26 @@ const MAX_HISTORY_SIZE = 50;
 
 interface AppSettings {
   debugOverlay: boolean;
+  showHeroTransformers: boolean;
 }
 
 const getDefaultSettings = (): AppSettings => {
   try {
     const stored = localStorage.getItem("appSettings");
+    // Validate stored settings and that it matches the AppSettings structure
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      if (typeof parsed === "object" && parsed !== null && "debugOverlay" in parsed && "showHeroTransformers" in parsed) {
+        return parsed;
+      }
     }
   } catch (e) {
     console.log("Failed to load settings from localStorage, using defaults.", e);
   }
-  return { debugOverlay: false };
+  return {
+    debugOverlay: false,
+    showHeroTransformers: false,
+  };
 }
 
 export interface AppState {
