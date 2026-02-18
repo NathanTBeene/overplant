@@ -216,9 +216,10 @@ export const useDrawingHandlers = () => {
       endBatch,
       setActiveTool,
       setSelectedElementId,
+      activeTool,
     } = useAppStore.getState();
 
-    if (isDrawing) {
+    if (isDrawing && activeTool !== "erase") {
       const lastElement = elements[elements.length - 1];
       if (lastElement) {
         updateElement(lastElement.id, { draggable: true });
